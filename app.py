@@ -1,11 +1,15 @@
-# app.py
 from flask import Flask, request, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
+from dotenv import load_dotenv
 import jwt
+import os
 import datetime
 
+
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key'
+
+load_dotenv()
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 users = {}
 
@@ -22,7 +26,7 @@ def protected():
 
     try:
         token = bearerToken.split(' ')[1]
-        data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+        data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
     except jwt.PyJWTError as e:
         print(e)
         return jsonify({'message': 'Token is invalid!'}), 401
@@ -60,7 +64,7 @@ def login():
     token = jwt.encode({
         'user': username,
         'exp': datetime.datetime.now() + datetime.timedelta(hours=1)
-    }, app.config['SECRET_KEY'])
+    }, SECRET_KEY)
 
     return jsonify({'token': token})
 
