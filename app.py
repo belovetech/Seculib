@@ -1,3 +1,4 @@
+from functools import wraps
 from flask import Flask, request, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
@@ -12,29 +13,36 @@ app = Flask(__name__)
 load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-# users = {}
-
+# Initialize the user manager
 user_manager = UserManager('users.db')
 
+
+
+def token_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        bearerToken = request.headers.get('Authorization')
+        if not bearerToken:
+            return jsonify({'message': 'Token is missing!'}), 401
+
+        try:
+            token = bearerToken.split(' ')[1]
+            data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+        except jwt.PyJWTError:
+            return jsonify({'message': 'Token is invalid!'}), 401
+
+        request.user_data = data  # Store user data in request for access in the route
+        return f(*args, **kwargs)
+
+    return decorated_function
 
 @app.route('/healthz', methods=['GET'])
 def healthz():
     return jsonify({'message': 'OK'})
 
 @app.route('/protected', methods=['GET'])
+@token_required
 def protected():
-    bearerToken = request.headers.get('Authorization')
-    if not bearerToken:
-        return jsonify({'message': 'Token is missing!'}), 401
-
-    try:
-        token = bearerToken.split(' ')[1]
-        data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-    except jwt.PyJWTError as e:
-        print(e)
-        return jsonify({'message': 'Token is invalid!'}), 401
-
-
     return jsonify({'message': 'You are in!'})
 
 @app.route('/unprotected', methods=['GET'])
@@ -59,7 +67,10 @@ def register():
 
     full_name = data['full_name']
     matric_no = data['matric_no']
+    print('plain_password', data['password'])
     password = generate_password_hash(data['password'])
+
+    print('hash_password', password)
 
     user_with_matric_no_exists = user_manager.get_user_by_matric_no(matric_no)
 
@@ -103,22 +114,11 @@ def login():
         return jsonify({'message': 'An error occurred!'}), 500
 
 
-
-#get user profile
 @app.route('/profile', methods=['GET'])
+@token_required
 def profile():
     try:
-        bearerToken = request.headers.get('Authorization')
-        if not bearerToken:
-            return jsonify({'message': 'Token is missing!'}), 401
-
-        try:
-            token = bearerToken.split(' ')[1]
-            data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-        except jwt.PyJWTError as e:
-            print(e)
-            return jsonify({'message': 'Token is invalid!'}), 401
-
+        data = request.user_data
         user = user_manager.get_user_by_matric_no(data['user'])
         del user['password'] # Remove password from the response
 
