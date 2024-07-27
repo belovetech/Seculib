@@ -92,12 +92,10 @@ class UserManager:
             if user is None:
                 return None
 
-            user_dict = {
-                'id': user[0],
-                'full_name': user[1],
-                'matric_no': user[2],
-                'password': user[3]
-            }
-            return user_dict
+            return self.tuple_to_dict(user)
 
 
+    def tuple_to_dict(self, user_tuple):
+        """Convert a user tuple to a dictionary."""
+        columns = ['id', 'full_name', 'matric_no', 'password']
+        return dict(zip(columns, user_tuple))
