@@ -1,14 +1,22 @@
-from functools import wraps
-from flask import Flask, request, jsonify
-from werkzeug.security import generate_password_hash, check_password_hash
-from dotenv import load_dotenv
 import jwt
 import os
 import datetime
+from flask import Flask, request, jsonify
+from werkzeug.security import generate_password_hash, check_password_hash
+from dotenv import load_dotenv
 from user_manager import UserManager
+from middlewares import RateLimitMiddleware
+from decorators import token_required
 
+
+# Rate limiting (10 requests in 5 minute)
+# Session management
+# Ip whitelisting
 
 app = Flask(__name__)
+
+# apply rate limit middleware
+RateLimitMiddleware(app, rate_limit=10, time_window=60)
 
 load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY')
@@ -16,29 +24,14 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # Initialize the user manager
 user_manager = UserManager('users.db')
 
-
-
-def token_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        bearerToken = request.headers.get('Authorization')
-        if not bearerToken:
-            return jsonify({'message': 'Token is missing!'}), 401
-
-        try:
-            token = bearerToken.split(' ')[1]
-            data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-        except jwt.PyJWTError:
-            return jsonify({'message': 'Token is invalid!'}), 401
-
-        request.user_data = data  # Store user data in request for access in the route
-        return f(*args, **kwargs)
-
-    return decorated_function
-
 @app.route('/healthz', methods=['GET'])
 def healthz():
     return jsonify({'message': 'OK'})
+
+@app.route('/api/data', methods=['GET'])
+def get_data():
+    data = {"message": "This is your data"}
+    return jsonify(data)
 
 @app.route('/protected', methods=['GET'])
 @token_required
@@ -67,10 +60,7 @@ def register():
 
     full_name = data['full_name']
     matric_no = data['matric_no']
-    print('plain_password', data['password'])
     password = generate_password_hash(data['password'])
-
-    print('hash_password', password)
 
     user_with_matric_no_exists = user_manager.get_user_by_matric_no(matric_no)
 
@@ -128,4 +118,4 @@ def profile():
         return jsonify({'message': 'An error occurred!'}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", debug=True)

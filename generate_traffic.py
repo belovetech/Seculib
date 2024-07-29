@@ -2,7 +2,7 @@ import asyncio
 import aiohttp
 import time
 
-url = "https://4f91-102-88-33-244.ngrok-free.app/unprotected"
+url = "https://a9de-102-88-69-214.ngrok-free.app/unprotected"
 num_requests = 10000  # Total number of requests to send
 concurrent_requests = 50  # Number of concurrent requests
 

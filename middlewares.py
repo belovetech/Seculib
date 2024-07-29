@@ -12,6 +12,7 @@ class RateLimitMiddleware:
 
     def get_client_key(self, client_ip, endpoint):
         raw_key = f"{client_ip}:{endpoint}"
+        print(raw_key)
         hashed_key = hashlib.sha256(raw_key.encode()).hexdigest()
         return hashed_key
 
