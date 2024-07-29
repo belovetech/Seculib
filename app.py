@@ -2,6 +2,7 @@ import jwt
 import os
 import datetime
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 from user_manager import UserManager
@@ -14,6 +15,7 @@ from decorators import token_required
 # Ip whitelisting
 
 app = Flask(__name__)
+CORS(app)
 
 # apply rate limit middleware
 RateLimitMiddleware(app, rate_limit=10, time_window=60)
