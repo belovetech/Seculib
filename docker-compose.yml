@@ -1,0 +1,51 @@
+# version: '3.8'
+
+services:
+  flask:
+    # image: secure-auth-dos:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    container_name: secure-auth-dos-prevention
+    volumes:
+      - .:/usr/src/app
+      - sqlite_data:/usr/src/app/
+      - .env:/usr/src/app/.env
+    develop:
+      watch:
+      - action: sync+restart
+        path: ./
+        target: /usr/src/app
+        # ignore:
+        #   - requirement.txt
+      - action: rebuild
+        path: requirement.txt
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  redis:
+    image: 'redis:alpine'
+    container_name: redis
+    healthcheck:
+      test: ['CMD-SHELL', 'redis-cli ping | grep PONG']
+      interval: 1s
+      timeout: 3s
+      retries: 5
+    command: ['redis-server']
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+
+volumes:
+  sqlite_data:
+  redis_data:
+    driver: local

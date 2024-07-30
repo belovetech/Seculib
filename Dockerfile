@@ -17,11 +17,13 @@ COPY . .
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0
 ENV FLASK_ENV=development
+ENV REDIS_HOST=redis
+ENV REDIS_PORT=6379
 
 # Expose the port the app runs on
-EXPOSE 5000
+EXPOSE 3000
 
 # Run the flask command
-CMD ["flask", "run"]
+CMD ["flask", "run", "-p", "3000"]
 
 

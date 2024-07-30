@@ -17,10 +17,11 @@ from decorators import token_required
 app = Flask(__name__)
 CORS(app)
 
-# apply rate limit middleware
-RateLimitMiddleware(app, rate_limit=10, time_window=60)
 
-load_dotenv()
+# apply rate limit middleware
+RateLimitMiddleware(app, rate_limit=100, time_window=60)
+
+load_dotenv(override=True)
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # Initialize the user manager
@@ -28,6 +29,7 @@ user_manager = UserManager('users.db')
 
 @app.route('/healthz', methods=['GET'])
 def healthz():
+    print("Health check.")
     return jsonify({'message': 'OK'})
 
 @app.route('/api/data', methods=['GET'])
@@ -120,4 +122,4 @@ def profile():
         return jsonify({'message': 'An error occurred!'}), 500
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="0.0.0.0", port=3000, debug=True)

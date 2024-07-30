@@ -1,18 +1,17 @@
+import os
 import hashlib
 from flask import request, jsonify
-import redis
-
+from redis_client import redis_client
 class RateLimitMiddleware:
-    def __init__(self, app, rate_limit=100, time_window=60, redis_host="localhost", redis_port=6379):
+    def __init__(self, app, rate_limit=100, time_window=60):
         self.app = app
         self.rate_limit = rate_limit
         self.time_window = time_window
-        self.redis_client = redis.StrictRedis(host=redis_host, port=redis_port, decode_responses=True)
+        self.redis_client = redis_client
         self.app.before_request(self.before_request)
 
     def get_client_key(self, client_ip, endpoint):
         raw_key = f"{client_ip}:{endpoint}"
-        print(raw_key)
         hashed_key = hashlib.sha256(raw_key.encode()).hexdigest()
         return hashed_key
 
