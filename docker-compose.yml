@@ -1,8 +1,5 @@
-# version: '3.8'
-
 services:
   flask:
-    # image: secure-auth-dos:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -18,8 +15,8 @@ services:
       - action: sync+restart
         path: ./
         target: /usr/src/app
-        # ignore:
-        #   - requirement.txt
+        ignore:
+          - users.db
       - action: rebuild
         path: requirement.txt
     environment:
