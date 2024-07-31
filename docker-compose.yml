@@ -1,5 +1,5 @@
 services:
-  flask:
+  api:
     build:
       context: .
       dockerfile: Dockerfile
