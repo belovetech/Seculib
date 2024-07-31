@@ -6,6 +6,7 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 from user_manager import UserManager
+from session_manager import sessionManager
 from middlewares import RateLimitMiddleware
 from decorators import token_required
 
@@ -25,7 +26,9 @@ load_dotenv(override=True)
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # Initialize the user manager
-user_manager = UserManager('users.db')
+db_name = 'users.db'
+user_manager = UserManager(db_name)
+session_manager = sessionManager(db_name)
 
 @app.route('/healthz', methods=['GET'])
 def healthz():
@@ -97,9 +100,14 @@ def login():
         if not user or not check_password_hash(user['password'], password):
             return jsonify({'message': 'Invalid credentials!'}), 401
 
+        expires_at = datetime.datetime.now() + datetime.timedelta(hours=1)
+         # Create a session for the user
+        session_id = session_manager.create_session(user['id'], expires_at)
+
         token = jwt.encode({
             'user': matric_no,
-            'exp': datetime.datetime.now() + datetime.timedelta(hours=1)
+            'exp': expires_at,
+            'session_id': session_id
         }, SECRET_KEY)
 
         return jsonify({'message': 'Logged in!', 'data': {'token':token}}), 200
@@ -113,6 +121,9 @@ def login():
 def profile():
     try:
         data = request.user_data
+
+        
+
         user = user_manager.get_user_by_matric_no(data['user'])
         del user['password'] # Remove password from the response
 

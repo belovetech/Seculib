@@ -19,7 +19,9 @@ class UserManager:
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     full_name TEXT NOT NULL,
                     matric_no TEXT NOT NULL UNIQUE,
-                    password TEXT NOT NULL
+                    password TEXT NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             ''')
             conn.commit()
