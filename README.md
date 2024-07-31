@@ -13,10 +13,11 @@ pip install -r requirements.txt
 
 ```
 
-# Run App
+# Run App Locally
 
 `flask run --debug`
 
-# Monitoring tools
 
-`ab -n 1000 -c 10 http://127.0.0.1:5000/unprotected`
+# Run app using Docker
+`./startup.sh`
+
