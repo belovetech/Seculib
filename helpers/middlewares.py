@@ -1,7 +1,7 @@
 import os
 import hashlib
 from flask import request, jsonify
-from redis_client import redis_client
+from helpers.redis_client import redis_client
 class RateLimitMiddleware:
     def __init__(self, app, rate_limit=100, time_window=60):
         self.app = app

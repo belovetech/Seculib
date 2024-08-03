@@ -2,7 +2,6 @@ import sqlite3
 import uuid
 
 
-
 class sessionManager:
 
     def __init__(self, db_name:str):

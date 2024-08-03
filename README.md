@@ -21,3 +21,5 @@ pip install -r requirements.txt
 # Run app using Docker
 `./startup.sh`
 
+
+<!-- export FLASK_APP=api.run -->
