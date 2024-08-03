@@ -3,8 +3,8 @@ import os
 import datetime
 from flask import request, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
-from models.user_manager import UserManager
-from  models.session_manager import sessionManager
+from models.engine.user_manager import UserManager
+from  models.engine.session_manager import sessionManager
 from helpers.decorators import token_required
 from api import app_views
 

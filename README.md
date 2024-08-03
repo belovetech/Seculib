@@ -23,3 +23,8 @@ pip install -r requirements.txt
 
 
 <!-- export FLASK_APP=api.run -->
+
+<!-- flask db init
+flask db migrate -m "Initial migration."
+flask db upgrade -->
+<!-- flask seed_books -->

@@ -2,7 +2,7 @@ import os
 from functools import wraps
 from flask import request, jsonify
 import jwt
-from models.session_manager import sessionManager
+from models.engine.session_manager import sessionManager
 
 
 SECRET_KEY = os.getenv('SECRET_KEY')
