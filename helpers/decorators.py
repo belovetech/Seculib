@@ -20,7 +20,6 @@ def token_required(f):
             token = bearerToken.split(' ')[1]
             data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
             session_id = data['session_id']
-            print('session_id', session_id)
             session = session_manager.get_session_by_session_id(session_id)
             if session is None:
                 return jsonify({'message': 'Session expired or you have logged in with another browser. Kindly login to create a new session'}), 401
