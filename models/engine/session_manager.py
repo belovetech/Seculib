@@ -1,81 +1,49 @@
-import sqlite3
 import uuid
+import datetime
+from models.student import  Session
+
+class SessionManager:
+
+    def __init__(self, db):
+        self.db = db
 
 
-class sessionManager:
+    def create_session(self, student_id, expiry_at):
+        try:
+            session = self.get_session_by_student_id(student_id)
+            if session:
+                session_id = session['id']
+                self.delete_session(session_id)
 
-    def __init__(self, db_name:str):
-        self.db_name = db_name
-        self.create_session_table()
+            session_id = str(uuid.uuid4())
+            created_at = datetime.datetime.now()
+            session = Session(id=session_id, student_id=student_id, created_at=created_at, expiry_at=expiry_at)
+            self.db.session.add(session)
+            self.db.session.commit()
+            return session_id
+        except Exception as e:
+            print("Create session error: ", e)
+            self.db.session.rollback()
+            return
 
-
-    def create_connection(self):
-        """Create a database connection."""
-        conn = sqlite3.connect(self.db_name)
-        return conn
-
-    def create_session_table(self):
-        """Create the sessions table if it doesn't already exist."""
-        with self.create_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute('''
-                CREATE TABLE IF NOT EXISTS sessions (
-                    session_id TEXT PRIMARY KEY,
-                    user_id INTEGER NOT NULL,
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    expires_at TIMESTAMP NOT NULL,
-                    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-                )
-            ''')
-            conn.commit()
-
-
-    def create_session(self, user_id, expires_at):
-        """Create a new session for the user."""
-        session = self.get_session_by_user_id(user_id)
+    def get_session_by_student_id(self, student_id):
+        session = self.db.session.query(Session).filter(Session.student_id == student_id).first()
         if session:
-            session_id = session[0]
-            self.delete_session(session_id)
-
-        session_id = str(uuid.uuid4())
-        self.insert_session(session_id, user_id, expires_at)
-        return session_id
-
-    def insert_session(self, session_id, user_id, expires_at):
-        """Insert a session into the table."""
-        with self.create_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute('''
-                INSERT INTO sessions (session_id, user_id, expires_at)
-                VALUES (?, ?, ?)
-            ''', (session_id, user_id, expires_at))
-            conn.commit()
-
-    def delete_session(self, session_id):
-        """Delete a session by its ID."""
-        with self.create_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute('''
-                DELETE FROM sessions WHERE session_id = ?
-            ''', (session_id,))
-            conn.commit()
-
-    def get_session_by_user_id(self, user_id):
-        """Retrieve a session by user ID."""
-        with self.create_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute('''
-                SELECT * FROM sessions WHERE user_id = ?
-            ''', (user_id,))
-            return cursor.fetchone()
+            return session.__dict__
+        return None
 
     def get_session_by_session_id(self, session_id):
-        """Retrieve a session by its ID."""
-        with self.create_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute('''
-                SELECT * FROM sessions WHERE session_id = ?
-            ''', (session_id,))
-            return cursor.fetchone()
+        session = self.db.session.query(Session).filter(Session.id == session_id).first()
+        if session:
+            del session.__dict__['_sa_instance_state']
+            return session.__dict__
+        return None
+
+    def delete_session(self, session_id):
+        return Session.query.filter_by(id=session_id).delete()
+
+
+
+
 
 

@@ -1,13 +1,14 @@
-from api.app import db
+from models.engine.db import db
 
 class Student(db.Model):
     __tablename__ = 'students'
 
     id = db.Column(db.String(25), primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(120), nullable=False, unique=True)
     matric_no = db.Column(db.String(20), nullable=False, unique=True)
     department = db.Column(db.String(55), nullable=False)
+    level = db.Column(db.String(10), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
 
     # Relationships
     sessions = db.relationship('Session', backref='student', lazy=True)

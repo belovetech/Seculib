@@ -1,4 +1,4 @@
-from api.app import db
+from models.engine.db import db
 
 class Book(db.Model):
     __tablename__ = 'books'
