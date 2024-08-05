@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    env_file:
+      - .env
     ports:
       - '3000:3000'
     container_name: secure-auth-dos-prevention
@@ -12,15 +14,15 @@ services:
       - .env:/usr/src/app/.env
     develop:
       watch:
-      - action: sync+restart
-        path: ./
-        target: /usr/src/app
-        ignore:
-          - users.db
-      - action: rebuild
-        path: requirement.txt
+        - action: sync+restart
+          path: ./
+          target: /usr/src/app
+          ignore:
+            - users.db
+        - action: rebuild
+          path: requirement.txt
     environment:
-      - FLASK_APP=app.py
+      - FLASK_APP=api.app
       - FLASK_ENV=development
       - REDIS_HOST=redis
       - REDIS_PORT=6379
