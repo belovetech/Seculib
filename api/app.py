@@ -26,7 +26,7 @@ app.register_blueprint(app_views)
 @app.route('/healthz', methods=['GET'])
 def healthz():
     print("Health check.")
-    return jsonify({'message': 'OK'})
+    return jsonify({'message': 'Server is up and running!'}), 200
 
 
 @app.cli.command('seed_books')
