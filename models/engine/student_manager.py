@@ -40,7 +40,8 @@ class StudentManager(SessionManager):
             token = jwt.encode({
                 'metric_no': matric_no,
                 'exp': expires_at,
-                'session_id': session_id
+                'session_id': session_id,
+                'student_id': student.id
             }, SECRET_KEY)
             return token
         except Exception as e:

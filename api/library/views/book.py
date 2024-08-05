@@ -11,15 +11,6 @@ book_manager = BookManager(db)
 book_borrow_manager = BorrowBookManager(db)
 
 
-# @app_views.route('/books/borrowed', methods=['GET'])
-# def get_borrowed_books():
-#     try:
-#         borrowed_books = book_borrow_manager.get_borrowed_books()
-#         return jsonify({'message': 'Borrowed book fetch successfully', 'data': borrowed_books, 'count': len(borrowed_books)}), 200
-#     except Exception as e:
-#         print("Get borrowd books error: ", e)
-#         return jsonify({'message': "Unable to fetch borrowed book from the library"}), 500
-
 @app_views.route('/books', methods=['GET'])
 def get_available_books():
     try:
@@ -35,6 +26,9 @@ def get_available_books():
 def get_book(book_id):
     try:
        book = book_manager.get_book_by_id(book_id)
+       if not book:
+              return jsonify({'message': 'Book not found!'}), 404
+
        return jsonify({'message': 'Book fetch successfully', 'data': book}), 200
     except Exception as e:
         print("Get book error: ", e)
@@ -43,7 +37,7 @@ def get_book(book_id):
 
 @app_views.route('/books/borrow', methods=['POST'])
 @token_required
-def get_borrowed_books():
+def borrow_book():
     try:
         data = request.get_json()
         current_student = request.student_data
@@ -52,7 +46,7 @@ def get_borrowed_books():
             return jsonify({'message': 'book_id is required'}), 400
 
         book_id = data['book_id']
-        student_id = current_student['metric_no']
+        student_id = current_student['student_id']
         borrow_date = datetime.datetime.now()
         return_date = borrow_date + datetime.timedelta(days=7)
         book = book_borrow_manager.borrow_book(
@@ -64,10 +58,12 @@ def get_borrowed_books():
         if not book:
             return jsonify({'message': 'Book not available'}), 400
 
-        return jsonify({'message': 'Borrowed book fetch successfully', 'data': book}), 200
+        print('Book borrowed: ', book)
+
+        return jsonify({'message': 'Book borrowed successfully'}), 200
     except Exception as e:
         print("Get books error: ", e)
-        return jsonify({'message': "Unable to fetch borrowed book from the library"}), 500
+        return jsonify({'message': "Unable to borrowed book from the library"}), 500
 
 
 @app_views.route('/books/return', methods=['POST'])
@@ -76,7 +72,7 @@ def return_book():
     try:
         data = request.get_json()
 
-        if 'book_id' not in data:
+        if 'borrowed_book_id' not in data:
             return jsonify({'message': 'borrowed_book_id is required'}), 400
 
         borrowed_book_id = data['borrowed_book_id']
@@ -85,11 +81,34 @@ def return_book():
         if not borrowed_book:
             return jsonify({'message': 'Borrowed book not found!'}), 404
 
-        if borrowed_book['student_id'] != request.user_data['metric_no']:
-            return jsonify({'message': 'Unauthorized!'}), 401
+        print("Borrowed book: ", borrowed_book)
 
-        book_borrow_manager.return_book(borrowed_book)
+        if borrowed_book['student_id'] != request.student_data['student_id']:
+            return jsonify({'message': 'Forbidden!'}), 403
+
+
+        book_borrow_manager.return_book(data['borrowed_book_id'])
         return jsonify({'message': 'Book returned successfully!'}), 200
     except Exception as e:
         print("Return book error: ", e)
         return jsonify({'message': "Unable to return book to the library"}), 500
+
+
+
+
+@app_views.route('/books/borrowed', methods=['GET'])
+@token_required
+def get_book_borrowed_by_student():
+    try:
+        student_id = request.student_data['student_id']
+        borrowed_books = book_borrow_manager.get_book_borrowed_by_student(student_id)
+        return jsonify({
+            'message': 'Borrowed book fetch successfully',
+            'data': {
+                'borrowed_books': borrowed_books,
+                'count': len(borrowed_books)
+            }
+        }), 200
+    except Exception as e:
+        print("Get borrowd books error: ", e)
+        return jsonify({'message': "Unable to fetch borrowed book from the library"}), 500
