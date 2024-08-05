@@ -19,7 +19,7 @@ spec:
         - containerPort: 3000
         env:
         - name: FLASK_APP
-          value: "app.py"
+          value: "api.app"
         - name: FLASK_ENV
           value: "development"
         - name: REDIS_HOST
@@ -162,7 +162,7 @@ metadata:
   name: secure-auth-config
 data:
   .env: |
-    FLASK_APP=app.py
+    FLASK_APP=api.app
     FLASK_ENV=development
     REDIS_HOST=redis
     REDIS_PORT=6379
