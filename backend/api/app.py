@@ -16,7 +16,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 # apply rate limit middleware
-# RateLimitMiddleware(app, rate_limit=100, time_window=60)
+RateLimitMiddleware(app, rate_limit=300, time_window=60)
 
 # register blueprints
 app.register_blueprint(app_views)

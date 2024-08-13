@@ -35,12 +35,11 @@ def register():
         if 'password' not in data:
             return jsonify({'message': 'password is required'}), 400
 
-        print(data['matric_no'])
+
         student_with_matric_no_exists = student_manager.get_student_by_matric_no(data['matric_no'])
-        print(student_with_matric_no_exists)
 
         if student_with_matric_no_exists:
-            return jsonify({'message': 'User already exists!'}), 400
+            return jsonify({'message': 'User already exists!'}), 409
 
         student =  student_manager.register_student(
             name=data['name'],
@@ -49,7 +48,8 @@ def register():
             level=data['level'],
             password=generate_password_hash(data['password'])
         )
-        del student["password"]
+        print(student)
+        # del student["password"]
         return jsonify({'message': 'Student registered successfully!', 'data':student}), 201
     except KeyError as e:
         print(e)

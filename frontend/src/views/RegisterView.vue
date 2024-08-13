@@ -108,7 +108,7 @@ export default defineComponent({
     const matricNo = ref('')
     const department = ref('')
     const level = ref('')
-    const email = ref('')
+
     const password = ref('')
     const confirmPassword = ref('')
     const BASE_URL = 'https://secure-auth-dos-prevention.onrender.com/api/v1/students'
@@ -125,7 +125,6 @@ export default defineComponent({
           matric_no: matricNo.value,
           department: department.value,
           level: level.value,
-          email: email.value,
           password: password.value
         })
 
@@ -149,7 +148,6 @@ export default defineComponent({
       matricNo,
       department,
       level,
-      email,
       password,
       confirmPassword,
       register,
