@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center items-center min-h-screen bg-black p-4">
-    <div class="w-full max-w-md bg-gray-800 shadow-lg rounded-lg p-8">
-      <h2 class="text-3xl font-extrabold mb-6 text-center text-white">Student Registration</h2>
+    <div class="w-full max-w-xl bg-gray-800 shadow-lg rounded-lg p-8">
+      <h2 class="text-3xl font-extrabold mb-6 text-center text-white">Registration</h2>
       <form @submit.prevent="register">
         <div class="mb-4">
           <label for="name" class="block text-white text-sm font-bold mb-2">Full Name:</label>
