@@ -15,13 +15,12 @@ export default defineComponent({
         const token = localStorage.getItem('token')
         if (!token) throw new Error('Token not found')
 
-        const response = await axios.get(`${BASE_URL}/borrowed-books`, {
+        const response = await axios.get(`${BASE_URL}/books/borrowed`, {
           headers: { Authorization: `Bearer ${token}` }
         })
 
-        borrowedBooks.value = response.data.data
+        borrowedBooks.value = response.data.data.borrowed_books
       } catch (error) {
-        alert('Unable to fetch borrowed books')
         console.error('Error fetching borrowed books:', error)
       }
     }

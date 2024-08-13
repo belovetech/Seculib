@@ -29,6 +29,8 @@ export default defineComponent({
         return
       }
 
+      console.log('Borrowing book with ID:', id)
+
       try {
         await axios.post(`${BASE_URL}/borrow`, {
           book_id: id
