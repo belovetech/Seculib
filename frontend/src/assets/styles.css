@@ -1,0 +1,6 @@
+/* src/assets/styles.css */
+body {
+  font-size: 14px; /* Adjust this value to set the desired base font size */
+  font-family: 'Arial', sans-serif; /* Set a consistent font family */
+  line-height: 1.6; /* Optional: Improve readability */
+}

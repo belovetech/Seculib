@@ -1,29 +1,25 @@
 <template>
-  <div
-    class="flex justify-center items-center h-screen bg-gradient-to-r from-green-500 to-blue-500"
-  >
-    <div class="w-full max-w-lg bg-white shadow-lg rounded-lg p-8">
-      <h2 class="text-3xl font-extrabold mb-6 text-center text-gray-800">Login</h2>
+  <div class="flex justify-center items-center h-screen bg-black">
+    <div class="w-full max-w-md bg-gray-800 shadow-lg rounded-lg p-8">
+      <h2 class="text-3xl font-extrabold mb-6 text-center text-white">Login</h2>
       <form @submit.prevent="login">
         <div class="mb-4">
-          <label for="matricNo" class="block text-gray-700 text-sm font-bold mb-2"
-            >Matric No:</label
-          >
+          <label for="matricNo" class="block text-white text-sm font-bold mb-2">Matric No:</label>
           <input
             v-model="matricNo"
             id="matricNo"
             type="text"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            class="shadow appearance-none border border-gray-600 rounded w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline bg-gray-700"
             required
           />
         </div>
         <div class="mb-6">
-          <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password:</label>
+          <label for="password" class="block text-white text-sm font-bold mb-2">Password:</label>
           <input
             v-model="password"
             id="password"
             type="password"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            class="shadow appearance-none border border-gray-600 rounded w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline bg-gray-700"
             required
           />
         </div>

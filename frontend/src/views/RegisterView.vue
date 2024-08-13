@@ -1,50 +1,48 @@
 <template>
-  <div
-    class="flex justify-center items-center h-screen bg-gradient-to-r from-blue-500 to-green-500"
-  >
-    <div class="w-full max-w-lg bg-white shadow-lg rounded-lg p-8">
-      <h2 class="text-3xl font-extrabold mb-6 text-center text-gray-800">Student Registration</h2>
+  <div class="flex justify-center items-center min-h-screen bg-black p-4">
+    <div class="w-full max-w-md bg-gray-800 shadow-lg rounded-lg p-8">
+      <h2 class="text-3xl font-extrabold mb-6 text-center text-white">Student Registration</h2>
       <form @submit.prevent="register">
         <div class="mb-4">
-          <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Full Name:</label>
+          <label for="name" class="block text-white text-sm font-bold mb-2">Full Name:</label>
           <input
             v-model="name"
             id="name"
             type="text"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            class="shadow appearance-none border border-gray-600 rounded w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline bg-gray-700"
             required
           />
         </div>
         <div class="mb-4">
-          <label for="matricNo" class="block text-gray-700 text-sm font-bold mb-2"
+          <label for="matricNo" class="block text-white text-sm font-bold mb-2"
             >Matric Number:</label
           >
           <input
             v-model="matricNo"
             id="matricNo"
             type="text"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            class="shadow appearance-none border border-gray-600 rounded w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline bg-gray-700"
             required
           />
         </div>
         <div class="mb-4">
-          <label for="department" class="block text-gray-700 text-sm font-bold mb-2"
+          <label for="department" class="block text-white text-sm font-bold mb-2"
             >Department:</label
           >
           <input
             v-model="department"
             id="department"
             type="text"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            class="shadow appearance-none border border-gray-600 rounded w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline bg-gray-700"
             required
           />
         </div>
         <div class="mb-4">
-          <label for="level" class="block text-gray-700 text-sm font-bold mb-2">Level:</label>
+          <label for="level" class="block text-white text-sm font-bold mb-2">Level:</label>
           <select
             v-model="level"
             id="level"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            class="shadow appearance-none border border-gray-600 rounded w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline bg-gray-700"
             required
           >
             <option value="ND 1">ND 1</option>
@@ -54,24 +52,24 @@
           </select>
         </div>
         <div class="mb-4">
-          <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password:</label>
+          <label for="password" class="block text-white text-sm font-bold mb-2">Password:</label>
           <input
             v-model="password"
             id="password"
             type="password"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            class="shadow appearance-none border border-gray-600 rounded w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline bg-gray-700"
             required
           />
         </div>
         <div class="mb-6">
-          <label for="confirmPassword" class="block text-gray-700 text-sm font-bold mb-2"
+          <label for="confirmPassword" class="block text-white text-sm font-bold mb-2"
             >Confirm Password:</label
           >
           <input
             v-model="confirmPassword"
             id="confirmPassword"
             type="password"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            class="shadow appearance-none border border-gray-600 rounded w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline bg-gray-700"
             required
           />
         </div>
@@ -84,6 +82,15 @@
           </button>
         </div>
       </form>
+      <div class="mt-4 text-center">
+        <p class="text-gray-300">Already have an account?</p>
+        <button
+          @click="goToLogin"
+          class="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Login
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -121,7 +128,7 @@ export default defineComponent({
           email: email.value,
           password: password.value
         })
-        console.log(response.data)
+
         const message = response.data.message
         alert(message)
         router.push('/login')
@@ -133,6 +140,10 @@ export default defineComponent({
       }
     }
 
+    const goToLogin = () => {
+      router.push('/login')
+    }
+
     return {
       name,
       matricNo,
@@ -141,7 +152,8 @@ export default defineComponent({
       email,
       password,
       confirmPassword,
-      register
+      register,
+      goToLogin
     }
   }
 })

@@ -7,8 +7,9 @@ export default defineComponent({
   name: 'BorrowedBooksView',
   setup() {
     const borrowedBooks = ref<BorrowedBook[]>([])
+    const returning = ref<{ [key: string]: boolean }>({}) // Track returning state for each book
 
-    const BASE_URL = 'https://secure-auth-dos-prevention.onrender.com/api/v1/students'
+    const BASE_URL = 'https://secure-auth-dos-prevention.onrender.com/api/v1'
 
     const fetchBorrowedBooks = async () => {
       try {
@@ -22,6 +23,28 @@ export default defineComponent({
         borrowedBooks.value = response.data.data.borrowed_books
       } catch (error) {
         console.error('Error fetching borrowed books:', error)
+      }
+    }
+
+    const returnBook = async (bookId: string) => {
+      try {
+        const token = localStorage.getItem('token')
+        if (!token) throw new Error('Token not found')
+
+        returning.value[bookId] = true // Disable the button for this book
+
+        await axios.post(
+          `${BASE_URL}/books/return`,
+          { borrowed_book_id: bookId },
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
+
+        fetchBorrowedBooks() // Refresh the list after returning the book
+      } catch (error) {
+        console.error('Error returning book:', error)
+        alert('Failed to return book')
+      } finally {
+        returning.value[bookId] = false // Re-enable the button after the request completes
       }
     }
 
@@ -41,35 +64,47 @@ export default defineComponent({
     return {
       borrowedBooks,
       goBack,
-      formatDate
+      formatDate,
+      returnBook,
+      returning
     }
   }
 })
 </script>
 
-<style scoped>
-/* Custom styles (if needed) */
-</style>
-
 <template>
-  <div class="flex justify-center items-center h-screen bg-gray-100">
+  <div class="flex justify-center items-center bg-gray-100">
     <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-8">
       <h2 class="text-3xl font-extrabold mb-6 text-center text-gray-800">Borrowed Books</h2>
-      <table class="min-w-full bg-white">
-        <thead class="bg-gray-200">
+      <table class="min-w-full bg-white border border-gray-200">
+        <thead class="bg-gray-700">
           <tr>
-            <th class="py-2 px-4 text-left">Title</th>
-            <th class="py-2 px-4 text-left">Author</th>
-            <th class="py-2 px-4 text-left">Borrowed Date</th>
-            <th class="py-2 px-4 text-left">Return Date</th>
+            <th class="py-3 px-4 text-left text-white border-b border-gray-200">Title</th>
+            <th class="py-3 px-4 text-left text-white border-b border-gray-200">Author</th>
+            <th class="py-3 px-4 text-left text-white border-b border-gray-200">Borrowed Date</th>
+            <th class="py-3 px-4 text-left text-white border-b border-gray-200">Return Date</th>
+            <th class="py-3 px-4 text-center text-white border-b border-gray-200">Actions</th>
           </tr>
         </thead>
-        <tbody>
-          <tr v-for="book in borrowedBooks" :key="book.id">
-            <td class="py-2 px-4">{{ book.book.title }}</td>
-            <td class="py-2 px-4">{{ book.book.title }}</td>
-            <td class="py-2 px-4">{{ formatDate(book.borrow_date) }}</td>
-            <td class="py-2 px-4">{{ formatDate(book.return_date) }}</td>
+        <tbody class="text-gray-600">
+          <tr
+            v-for="book in borrowedBooks"
+            :key="book.id"
+            class="border-t border-gray-200 hover:bg-gray-100"
+          >
+            <td class="py-3 px-4">{{ book.book.title }}</td>
+            <td class="py-3 px-4">{{ book.book.author }}</td>
+            <td class="py-3 px-4">{{ formatDate(book.borrow_date) }}</td>
+            <td class="py-3 px-4">{{ formatDate(book.return_date) }}</td>
+            <td class="py-3 px-4 text-center">
+              <button
+                @click="returnBook(book.book.id)"
+                :disabled="returning[book.book.id]"
+                class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                {{ returning[book.book.id] ? 'Returning...' : 'Return' }}
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>

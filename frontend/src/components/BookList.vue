@@ -1,7 +1,6 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue'
 import axios, { AxiosError } from 'axios'
-import { useUserStore } from '@/stores/useUserStore'
 import type { Book } from '@/types'
 
 export default defineComponent({
@@ -9,7 +8,7 @@ export default defineComponent({
   setup() {
     const BASE_URL = 'https://secure-auth-dos-prevention.onrender.com/api/v1'
     const books = ref<Book[]>([])
-    const userStore = useUserStore()
+    const borrowing = ref<{ [key: string]: boolean }>({})
 
     const fetchBooks = async () => {
       try {
@@ -24,21 +23,26 @@ export default defineComponent({
     }
 
     const borrowBook = async (id: string) => {
-      if (!userStore.isAuthenticated) {
-        alert('Please log in to borrow a book.')
+      const token = localStorage.getItem('token')
+      if (!token) {
+        alert('You need to login to borrow a book')
         return
       }
 
-      console.log('Borrowing book with ID:', id)
+      borrowing.value[id] = true // Disable the button for this book
 
       try {
-        await axios.post(`${BASE_URL}/borrow`, {
-          book_id: id
-        })
-        fetchBooks()
+        await axios.post(
+          `${BASE_URL}/books/borrow`,
+          { book_id: id },
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
+        fetchBooks() // Refresh the book list after borrowing
       } catch (error) {
         console.error('Error borrowing the book:', error)
         alert('Failed to borrow the book. Please try again later.')
+      } finally {
+        borrowing.value[id] = false // Re-enable the button after the request completes
       }
     }
 
@@ -46,19 +50,18 @@ export default defineComponent({
 
     return {
       books,
-      borrowBook
+      borrowBook,
+      borrowing
     }
   }
 })
 </script>
 
-<style scoped>
-/* Additional styles, if needed */
-</style>
-
 <template>
   <div class="py-10">
-    <h2 class="text-3xl font-extrabold mb-6 text-center text-gray-500">Available Books</h2>
+    <h2 class="text-2xl font-extrabold mb-2 text-center text-gray-500">
+      {{ books.length }} Available Books
+    </h2>
     <ul class="space-y-4">
       <li
         v-for="book in books"
@@ -72,9 +75,10 @@ export default defineComponent({
         <button
           v-if="book.available"
           @click="borrowBook(book.id)"
-          class="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
+          :disabled="borrowing[book.id]"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md focus:outline-none focus:shadow-outline"
         >
-          Borrow
+          {{ borrowing[book.id] ? 'Borrowing...' : 'Borrow' }}
         </button>
       </li>
     </ul>

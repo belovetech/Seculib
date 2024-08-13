@@ -1,6 +1,6 @@
 <template>
   <nav v-if="showNavbar" class="bg-blue-600 text-white py-4 px-6 flex justify-between items-center">
-    <h1 class="text-2xl font-bold">E-Library</h1>
+    <h1 class="text-2xl font-bold">Secure Shelf</h1>
     <ul class="flex space-x-4">
       <li>
         <router-link to="/profile" class="hover:text-gray-300" v-if="showProfileLink">
@@ -8,7 +8,7 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/books" class="hover:text-gray-300">Library</router-link>
+        <router-link to="/books" class="hover:text-gray-300">Books</router-link>
       </li>
       <!-- Add other navigation links here -->
     </ul>
