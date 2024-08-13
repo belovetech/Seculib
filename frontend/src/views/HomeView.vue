@@ -1,3 +1,11 @@
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+  name: 'HomeView'
+})
+</script>
+
 <template>
   <div class="text-center py-20">
     <h1 class="text-4xl font-bold">Welcome to the E-Library</h1>
@@ -12,11 +20,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'HomeView'
-})
-</script>
