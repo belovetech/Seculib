@@ -36,7 +36,7 @@
             @click="$router.push('/borrowed-books')"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow focus:outline-none focus:shadow-outline w-full mr-2"
           >
-            View Borrowed Books
+            Borrowed Books
           </button>
 
           <button

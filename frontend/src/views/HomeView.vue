@@ -8,7 +8,10 @@ export default defineComponent({
 
 <template>
   <div class="text-center py-20">
-    <h1 class="text-4xl font-bold">Welcome to the E-Library</h1>
+    <h1 class="text-4xl font-bold">
+      Welcome to the SecureLib
+      <img src="../assets/white-logo.svg" alt="Logo" class="h-12 w-12 inline-block" />
+    </h1>
     <p class="mt-4">Access a wide range of books. Register, Login, and Start Borrowing!</p>
     <div class="mt-8">
       <router-link to="/register" class="bg-blue-500 text-white py-2 px-4 rounded"

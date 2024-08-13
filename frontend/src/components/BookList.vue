@@ -58,18 +58,18 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="py-10">
+  <div class="py-6">
     <h2 class="text-2xl font-extrabold mb-2 text-center text-gray-500">
       {{ books.length }} Available Books
     </h2>
-    <ul class="space-y-4">
+    <ul class="space-y-3">
       <li
         v-for="book in books"
         :key="book.id"
         class="p-4 bg-white rounded-lg shadow-md flex justify-between items-center"
       >
         <div>
-          <h3 class="text-xl font-semibold text-gray-900">{{ book.title }}</h3>
+          <h3 class="text-md font-semibold text-gray-900">{{ book.title }}</h3>
           <p class="text-gray-700">by {{ book.author }}</p>
         </div>
         <button
