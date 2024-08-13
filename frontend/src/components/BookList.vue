@@ -1,19 +1,22 @@
 <template>
   <div class="py-10">
-    <h2 class="text-2xl font-bold mb-6">Available Books</h2>
-    <ul>
-      <li v-for="book in books" :key="book.id" class="mb-4">
-        <h3 class="text-xl">{{ book.title }}</h3>
-        <p>{{ book.author }}</p>
-        <button @click="borrowBook(book.id)" class="bg-green-500 text-white py-1 px-4 rounded">
-          Borrow
-        </button>
+    <h2 class="text-3xl font-extrabold mb-6 text-center text-gray-500">Available Books</h2>
+    <ul class="space-y-4">
+      <li
+        v-for="book in books"
+        :key="book.id"
+        class="p-4 bg-white rounded-lg shadow-md flex justify-between items-center"
+      >
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900">{{ book.title }}</h3>
+          <p class="text-gray-700">by {{ book.author }}</p>
+        </div>
         <button
-          v-if="book.borrowed"
-          @click="returnBook(book.id)"
-          class="bg-red-500 text-white py-1 px-4 rounded ml-2"
+          v-if="book.available"
+          @click="borrowBook(book.id)"
+          class="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
         >
-          Return
+          Borrow
         </button>
       </li>
     </ul>
@@ -22,61 +25,49 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { useUserStore } from '@/stores/useUserStore'
 
 interface Book {
-  id: number
+  id: string
   title: string
   author: string
-  borrowed: boolean
+  available: boolean
 }
 
 export default defineComponent({
   name: 'BookList',
   setup() {
+    const BASE_URL = 'https://secure-auth-dos-prevention.onrender.com/api/v1'
     const books = ref<Book[]>([])
     const userStore = useUserStore()
 
     const fetchBooks = async () => {
-      if (!userStore.isAuthenticated) {
-        // Handle unauthenticated access
-        return
-      }
-
       try {
-        const response = await axios.get<Book[]>('your-backend-api/books')
-        books.value = response.data
-      } catch (error) {
-        // Handle error
+        const response = await axios.get(`${BASE_URL}/books`)
+        books.value = response.data.data
+      } catch (e) {
+        const error = e as AxiosError
+        const message = error.response?.data as { message: string }
+        alert(message.message)
+        console.error(error)
       }
     }
 
-    const borrowBook = async (id: number) => {
+    const borrowBook = async (id: string) => {
       if (!userStore.isAuthenticated) {
-        // Handle unauthenticated action
+        alert('Please log in to borrow a book.')
         return
       }
 
       try {
-        await axios.post(`your-backend-api/borrow/${id}`)
+        await axios.post(`${BASE_URL}/borrow`, {
+          book_id: id
+        })
         fetchBooks()
       } catch (error) {
-        // Handle error
-      }
-    }
-
-    const returnBook = async (id: number) => {
-      if (!userStore.isAuthenticated) {
-        // Handle unauthenticated action
-        return
-      }
-
-      try {
-        await axios.post(`your-backend-api/return/${id}`)
-        fetchBooks()
-      } catch (error) {
-        // Handle error
+        console.error('Error borrowing the book:', error)
+        alert('Failed to borrow the book. Please try again later.')
       }
     }
 
@@ -84,9 +75,12 @@ export default defineComponent({
 
     return {
       books,
-      borrowBook,
-      returnBook
+      borrowBook
     }
   }
 })
 </script>
+
+<style scoped>
+/* Additional styles, if needed */
+</style>
