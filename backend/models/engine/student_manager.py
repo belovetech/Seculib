@@ -77,7 +77,6 @@ class StudentManager(SessionManager):
         if student:
             student = student.__dict__.copy()
             student.pop('_sa_instance_state')
-            student.pop('password')
             return student
         return None
 
