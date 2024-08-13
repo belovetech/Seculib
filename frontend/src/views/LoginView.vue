@@ -6,7 +6,9 @@
       <h2 class="text-3xl font-extrabold mb-6 text-center text-gray-800">Login</h2>
       <form @submit.prevent="login">
         <div class="mb-4">
-          <label for="matricNo" class="block text-gray-700 text-sm font-bold mb-2">matricNo:</label>
+          <label for="matricNo" class="block text-gray-700 text-sm font-bold mb-2"
+            >Matric No:</label
+          >
           <input
             v-model="matricNo"
             id="matricNo"
@@ -27,10 +29,12 @@
         </div>
         <div class="flex items-center justify-between">
           <button
+            :disabled="loading"
             type="submit"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
           >
-            Login
+            <span v-if="loading">Loading...</span>
+            <span v-else>Login</span>
           </button>
         </div>
       </form>
@@ -40,9 +44,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { useUserStore } from '@/stores/useUserStore'
-import axios, { AxiosError } from 'axios'
 import { useRouter } from 'vue-router'
+import axios, { AxiosError } from 'axios'
 
 export default defineComponent({
   name: 'LoginView',
@@ -50,31 +53,36 @@ export default defineComponent({
     const router = useRouter()
     const matricNo = ref('')
     const password = ref('')
+    const loading = ref(false) // Loading state
     const BASE_URL = 'https://secure-auth-dos-prevention.onrender.com/api/v1/students'
-    const userStore = useUserStore()
 
     const login = async () => {
+      if (loading.value) return // Prevent multiple requests
+
+      loading.value = true // Set loading to true
+
       try {
         const response = await axios.post(`${BASE_URL}/login`, {
           matric_no: matricNo.value,
           password: password.value
         })
-        // userStore.login(response.data)
-        // localStorage.setItem('token', response.data.token)
-        const message = response.data.message
-        alert(message)
-        router.push('/books')
+
+        const { token } = response.data.data
+        localStorage.setItem('token', token)
+        router.push('/profile')
       } catch (e) {
         const error = e as AxiosError
-        const message = error.response?.data as { message: string }
-        alert(message.message)
-        console.error(error)
+        const message = (error.response?.data as { message: string })?.message || 'Login failed'
+        alert(message)
+      } finally {
+        loading.value = false // Set loading to false after request is done
       }
     }
 
     return {
       matricNo,
       password,
+      loading,
       login
     }
   }
