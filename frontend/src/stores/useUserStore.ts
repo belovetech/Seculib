@@ -3,7 +3,9 @@ import { defineStore } from 'pinia'
 interface User {
   id: number
   name: string
-  email: string
+  matric_no: string
+  department: string
+  level: string
 }
 
 interface State {
@@ -15,6 +17,9 @@ export const useUserStore = defineStore('user', {
     user: null
   }),
   actions: {
+    currentUser(user: User) {
+      this.user = user
+    },
     login(user: User) {
       this.user = user
     },
