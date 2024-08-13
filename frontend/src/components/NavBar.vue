@@ -3,11 +3,11 @@ import { defineComponent, computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 export default defineComponent({
-  name: 'Navbar',
+  name: 'NavBar',
   setup() {
     const route = useRoute()
 
-    const showNavbar = computed(() => {
+    const showNavBar = computed(() => {
       return !['/register', '/login', '/'].includes(route.path)
     })
 
@@ -16,7 +16,7 @@ export default defineComponent({
     })
 
     return {
-      showNavbar,
+      showNavBar,
       showProfileLink
     }
   }
@@ -28,7 +28,7 @@ export default defineComponent({
 </style>
 
 <template>
-  <nav v-if="showNavbar" class="bg-blue-600 text-white py-4 px-6 flex justify-between items-center">
+  <nav v-if="showNavBar" class="bg-blue-600 text-white py-4 px-6 flex justify-between items-center">
     <h1 class="text-2xl font-bold">
       SecureLib
       <img src="../assets/dark-logo.svg" alt="Logo" class="h-8 w-8 inline-block" />
