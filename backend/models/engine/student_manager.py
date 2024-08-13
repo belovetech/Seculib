@@ -52,9 +52,11 @@ class StudentManager(SessionManager):
         try:
             student_objs = []
             students = self.db.session.query(Student).all()
+            print(students)
             for student in students:
                 student = student.__dict__.copy()
                 student.pop('_sa_instance_state')
+                student.pop('password')
                 student_objs.append(student)
             return student_objs
         except Exception as e:
@@ -66,6 +68,7 @@ class StudentManager(SessionManager):
         if student:
             student = student.__dict__.copy()
             student.pop('_sa_instance_state')
+            student.pop('password')
             return student
         return None
 
@@ -74,6 +77,7 @@ class StudentManager(SessionManager):
         if student:
             student = student.__dict__.copy()
             student.pop('_sa_instance_state')
+            student.pop('password')
             return student
         return None
 

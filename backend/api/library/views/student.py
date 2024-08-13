@@ -49,6 +49,7 @@ def register():
             level=data['level'],
             password=generate_password_hash(data['password'])
         )
+        del student["password"]
         return jsonify({'message': 'Student registered successfully!', 'data':student}), 201
     except KeyError as e:
         print(e)
@@ -99,3 +100,11 @@ def profile():
         return jsonify({'message': 'An error occurred!'}), 500
 
 
+@app_views.route('students', methods=['GET'])
+def get_students():
+    try:
+        students = student_manager.get_all_students()
+        return jsonify({'data': students, "message": "Students fetched successfully"}), 200
+    except Exception as e:
+        print(e)
+        return jsonify({'message': 'An error occurred!'}), 500
