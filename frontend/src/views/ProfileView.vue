@@ -28,7 +28,7 @@ export default defineComponent({
         profile.value = response.data.data
         userStore.currentUser(response.data.data)
       } catch (error) {
-        alert('Unable to fetch profile')
+        // alert('Unable to fetch profile')
         console.error('Error fetching profile:', error)
       } finally {
         loading.value = false // Set loading to false after data is fetched
@@ -78,6 +78,13 @@ export default defineComponent({
           <label class="block text-gray-700 text-sm font-bold mb-2">Level:</label>
           <p class="text-gray-900 text-lg font-medium">{{ profile.level }}</p>
         </div>
+        <button
+          @click="$router.push('/borrowed-books')"
+          class="mt-6 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+        >
+          View Borrowed Books
+        </button>
+
         <button
           @click="goBack"
           class="mt-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"

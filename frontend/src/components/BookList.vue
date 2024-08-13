@@ -1,39 +1,8 @@
-<template>
-  <div class="py-10">
-    <h2 class="text-3xl font-extrabold mb-6 text-center text-gray-500">Available Books</h2>
-    <ul class="space-y-4">
-      <li
-        v-for="book in books"
-        :key="book.id"
-        class="p-4 bg-white rounded-lg shadow-md flex justify-between items-center"
-      >
-        <div>
-          <h3 class="text-xl font-semibold text-gray-900">{{ book.title }}</h3>
-          <p class="text-gray-700">by {{ book.author }}</p>
-        </div>
-        <button
-          v-if="book.available"
-          @click="borrowBook(book.id)"
-          class="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
-        >
-          Borrow
-        </button>
-      </li>
-    </ul>
-  </div>
-</template>
-
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue'
 import axios, { AxiosError } from 'axios'
 import { useUserStore } from '@/stores/useUserStore'
-
-interface Book {
-  id: string
-  title: string
-  author: string
-  available: boolean
-}
+import type { Book } from '@/types'
 
 export default defineComponent({
   name: 'BookList',
@@ -84,3 +53,28 @@ export default defineComponent({
 <style scoped>
 /* Additional styles, if needed */
 </style>
+
+<template>
+  <div class="py-10">
+    <h2 class="text-3xl font-extrabold mb-6 text-center text-gray-500">Available Books</h2>
+    <ul class="space-y-4">
+      <li
+        v-for="book in books"
+        :key="book.id"
+        class="p-4 bg-white rounded-lg shadow-md flex justify-between items-center"
+      >
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900">{{ book.title }}</h3>
+          <p class="text-gray-700">by {{ book.author }}</p>
+        </div>
+        <button
+          v-if="book.available"
+          @click="borrowBook(book.id)"
+          class="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
+        >
+          Borrow
+        </button>
+      </li>
+    </ul>
+  </div>
+</template>

@@ -4,6 +4,7 @@ import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import BookListView from '../components/BookList.vue'
 import ProfileView from '../views/ProfileView.vue'
+import BorrowedBooksView from '../views/BorrowedBooksView.vue'
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: ProfileView
+  },
+  {
+    path: '/borrowed-books',
+    name: 'BorrowedBooks',
+    component: BorrowedBooksView
   }
 ]
 
