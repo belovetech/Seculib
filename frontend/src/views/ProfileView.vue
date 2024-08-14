@@ -1,38 +1,40 @@
 <template>
-  <div class="min-h-screen bg-gray-100 p-4 sm:p-8 flex flex-col items-center">
-    <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 sm:p-8">
-      <h2 class="text-2xl sm:text-3xl font-extrabold mb-6 text-center text-gray-800">Details</h2>
+  <div class="min-h-screen bg-gray-100 flex flex-col items-center p-4 sm:p-12">
+    <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg sm:mt-20 p-6 sm:p-8">
+      <h2 class="text-2xl sm:text-3xl font-extrabold mb-6 text-center text-gray-800">
+        Your Profile
+      </h2>
 
       <!-- Profile Information Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <!-- Name -->
-        <div class="bg-gray-50 p-4 rounded-lg shadow-inner">
-          <h3 class="text-lg font-semibold text-gray-700">Name</h3>
-          <p class="text-gray-900 text-xl mt-2">{{ profile.name }}</p>
+        <div class="flex justify-between bg-gray-50 p-4 rounded-lg shadow-inner">
+          <h3 class="text-sm sm:text-lg font-semibold text-gray-700">Name:</h3>
+          <p class="text-gray-900 text-sm sm:text-xl">{{ profile.name }}</p>
         </div>
 
         <!-- Matric No -->
-        <div class="bg-gray-50 p-4 rounded-lg shadow-inner">
-          <h3 class="text-lg font-semibold text-gray-700">Matric No</h3>
-          <p class="text-gray-900 text-xl mt-2">{{ profile.matric_no }}</p>
+        <div class="flex justify-between bg-gray-50 p-4 rounded-lg shadow-inner">
+          <h3 class="text-sm sm:text-lg font-semibold text-gray-700">Matric No:</h3>
+          <p class="text-gray-900 text-sm sm:text-xl">{{ profile.matric_no }}</p>
         </div>
 
         <!-- Department -->
-        <div class="bg-gray-50 p-4 rounded-lg shadow-inner">
-          <h3 class="text-lg font-semibold text-gray-700">Department</h3>
-          <p class="text-gray-900 text-xl mt-2">{{ profile.department }}</p>
+        <div class="flex justify-between bg-gray-50 p-4 rounded-lg shadow-inner">
+          <h3 class="text-sm sm:text-lg font-semibold text-gray-700">Department:</h3>
+          <p class="text-gray-900 text-sm sm:text-xl">{{ profile.department }}</p>
         </div>
 
         <!-- Level -->
-        <div class="bg-gray-50 p-4 rounded-lg shadow-inner">
-          <h3 class="text-lg font-semibold text-gray-700">Level</h3>
-          <p class="text-gray-900 text-xl mt-2">{{ profile.level }}</p>
+        <div class="flex justify-between bg-gray-50 p-4 rounded-lg shadow-inner">
+          <h3 class="text-sm sm:text-lg font-semibold text-gray-700">Level:</h3>
+          <p class="text-gray-900 text-sm sm:text-xl">{{ profile.level }}</p>
         </div>
 
         <!-- Borrowed Book Count -->
-        <div class="bg-gray-50 p-4 rounded-lg shadow-inner">
-          <h3 class="text-lg font-semibold text-gray-700">Borrowed Books</h3>
-          <p class="text-gray-900 text-xl mt-2">{{ borrowedBookData.count }}</p>
+        <div class="flex justify-between bg-gray-50 p-4 rounded-lg shadow-inner">
+          <h3 class="text-sm sm:text-lg font-semibold text-gray-700">Borrowed Books:</h3>
+          <p class="text-gray-900 text-sm sm:text-xl">{{ borrowedBookData.count }}</p>
         </div>
       </div>
 

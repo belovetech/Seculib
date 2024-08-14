@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import axios from 'axios'
 import { useUserStore } from '@/stores/useUserStore'
 import { computed } from 'vue'
@@ -66,7 +66,6 @@ export default defineComponent({
     const borrowedBookData = computed(() => {
       return userStore.borrowedBooks
     })
-
 
     const returnBook = async (bookId: string) => {
       try {
@@ -99,9 +98,9 @@ export default defineComponent({
       window.history.back()
     }
 
-    // onMounted(() => {
-    //   userStore.borrowedBook()
-    // })
+    onMounted(async () => {
+      await userStore.borrowedBook()
+    })
 
     return {
       goBack,
