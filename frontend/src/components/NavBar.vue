@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/useUserStore'
 
@@ -9,6 +9,7 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
     const userStore = useUserStore()
+    const isMobileMenuOpen = ref(false)
 
     const showNavBar = computed(() => {
       return !['/register', '/login', '/'].includes(route.path)
@@ -18,6 +19,10 @@ export default defineComponent({
       return !['/register', '/login', '/'].includes(route.path)
     })
 
+    const toggleMobileMenu = () => {
+      isMobileMenuOpen.value = !isMobileMenuOpen.value
+    }
+
     const logout = () => {
       userStore.logout()
       router.push('/')
@@ -26,7 +31,9 @@ export default defineComponent({
     return {
       logout,
       showNavBar,
-      showProfileLink
+      showProfileLink,
+      isMobileMenuOpen,
+      toggleMobileMenu
     }
   }
 })
@@ -37,27 +44,98 @@ export default defineComponent({
 </style>
 
 <template>
-  <nav v-if="showNavBar" class="bg-blue-600 text-white py-4 px-6 flex justify-between items-center">
-    <h1 class="text-2xl font-bold">
-      Seculib
-      <img src="../assets/dark-logo.svg" alt="Logo" class="h-8 w-8 inline-block" />
-    </h1>
-    <ul class="flex space-x-4">
+  <nav v-if="showNavBar" class="bg-blue-600 text-white py-4 px-6">
+    <div class="flex justify-between items-center">
+      <h1 class="text-2xl font-bold">
+        Seculib
+        <img src="../assets/dark-logo.svg" alt="Logo" class="h-8 w-8 inline-block" />
+      </h1>
+      <button @click="toggleMobileMenu" class="sm:hidden focus:outline-none">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16m-7 6h7"
+          />
+        </svg>
+      </button>
+      <ul class="hidden sm:flex space-x-4">
+        <li>
+          <router-link
+            to="/playground"
+            class="hover:text-gray-300 transition-colors duration-300"
+            v-if="showProfileLink"
+          >
+            Playground
+          </router-link>
+        </li>
+        <li>
+          <router-link
+            to="/profile"
+            class="hover:text-gray-300 transition-colors duration-300"
+            v-if="showProfileLink"
+          >
+            Profile
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/books" class="hover:text-gray-300 transition-colors duration-300">
+            Books
+          </router-link>
+        </li>
+        <li>
+          <button
+            class="hover:text-gray-300 transition-colors duration-300"
+            @click="logout"
+            v-if="showProfileLink"
+          >
+            Logout
+          </button>
+        </li>
+      </ul>
+    </div>
+    <ul v-if="isMobileMenuOpen" class="sm:hidden mt-4 space-y-4">
       <li>
-        <router-link to="/playground" class="hover:text-gray-300" v-if="showProfileLink">
+        <router-link
+          to="/playground"
+          class="block text-center hover:text-gray-300 transition-colors duration-300"
+          v-if="showProfileLink"
+        >
           Playground
         </router-link>
       </li>
       <li>
-        <router-link to="/profile" class="hover:text-gray-300" v-if="showProfileLink">
+        <router-link
+          to="/profile"
+          class="block text-center hover:text-gray-300 transition-colors duration-300"
+          v-if="showProfileLink"
+        >
           Profile
         </router-link>
       </li>
       <li>
-        <router-link to="/books" class="hover:text-gray-300">Books</router-link>
+        <router-link
+          to="/books"
+          class="block text-center hover:text-gray-300 transition-colors duration-300"
+        >
+          Books
+        </router-link>
       </li>
       <li>
-        <button class="hover:text-gray-300" @click="logout" v-if="showProfileLink">Logout</button>
+        <button
+          class="block text-center hover:text-gray-300 transition-colors duration-300 w-full"
+          @click="logout"
+          v-if="showProfileLink"
+        >
+          Logout
+        </button>
       </li>
     </ul>
   </nav>
