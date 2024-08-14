@@ -56,8 +56,9 @@ To get started with Seculib, you'll need to clone the repository and set up both
 
 ### Backend Setup
 
-For instructions on setting up the backend API, refer to the [Backend README](./backend/README.md).
+For instructions on setting up the backend API, refer to the [Backend README](https://github.com/belovetech/secure-auth-dos-prevention/blob/7b6b2bbcc35d8d6d3103d771f56d23045b2fab1b/backend/README.md).
 
 ### Frontend Setup
 
 For instructions on setting up the frontend application, refer to the [Frontend README](./frontend/README.md).
+https://github.com/belovetech/secure-auth-dos-prevention/blob/4a0a1648a3d12050e39765875732b5e81188f098/frontend/README.md

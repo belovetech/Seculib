@@ -1,48 +1,3 @@
-<script lang="ts">
-import { defineComponent, computed, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useUserStore } from '@/stores/useUserStore'
-
-export default defineComponent({
-  name: 'NavBar',
-  setup() {
-    const route = useRoute()
-    const router = useRouter()
-    const userStore = useUserStore()
-    const isMobileMenuOpen = ref(false)
-
-    const showNavBar = computed(() => {
-      return !['/register', '/login', '/'].includes(route.path)
-    })
-
-    const showProfileLink = computed(() => {
-      return !['/register', '/login', '/'].includes(route.path)
-    })
-
-    const toggleMobileMenu = () => {
-      isMobileMenuOpen.value = !isMobileMenuOpen.value
-    }
-
-    const logout = () => {
-      userStore.logout()
-      router.push('/')
-    }
-
-    return {
-      logout,
-      showNavBar,
-      showProfileLink,
-      isMobileMenuOpen,
-      toggleMobileMenu
-    }
-  }
-})
-</script>
-
-<style scoped>
-/* Add any additional styling if needed */
-</style>
-
 <template>
   <nav v-if="showNavBar" class="bg-blue-600 text-white py-4 px-6">
     <div class="flex justify-between items-center">
@@ -72,6 +27,7 @@ export default defineComponent({
             to="/playground"
             class="hover:text-gray-300 transition-colors duration-300"
             v-if="showProfileLink"
+            @click="closeMobileMenu"
           >
             Playground
           </router-link>
@@ -81,19 +37,24 @@ export default defineComponent({
             to="/profile"
             class="hover:text-gray-300 transition-colors duration-300"
             v-if="showProfileLink"
+            @click="closeMobileMenu"
           >
             Profile
           </router-link>
         </li>
         <li>
-          <router-link to="/books" class="hover:text-gray-300 transition-colors duration-300">
+          <router-link
+            to="/books"
+            class="hover:text-gray-300 transition-colors duration-300"
+            @click="closeMobileMenu"
+          >
             Books
           </router-link>
         </li>
         <li>
           <button
             class="hover:text-gray-300 transition-colors duration-300"
-            @click="logout"
+            @click="handleLogout"
             v-if="showProfileLink"
           >
             Logout
@@ -107,6 +68,7 @@ export default defineComponent({
           to="/playground"
           class="block text-center hover:text-gray-300 transition-colors duration-300"
           v-if="showProfileLink"
+          @click="closeMobileMenu"
         >
           Playground
         </router-link>
@@ -116,6 +78,7 @@ export default defineComponent({
           to="/profile"
           class="block text-center hover:text-gray-300 transition-colors duration-300"
           v-if="showProfileLink"
+          @click="closeMobileMenu"
         >
           Profile
         </router-link>
@@ -124,6 +87,7 @@ export default defineComponent({
         <router-link
           to="/books"
           class="block text-center hover:text-gray-300 transition-colors duration-300"
+          @click="closeMobileMenu"
         >
           Books
         </router-link>
@@ -131,7 +95,7 @@ export default defineComponent({
       <li>
         <button
           class="block text-center hover:text-gray-300 transition-colors duration-300 w-full"
-          @click="logout"
+          @click="handleLogout"
           v-if="showProfileLink"
         >
           Logout
@@ -140,3 +104,54 @@ export default defineComponent({
     </ul>
   </nav>
 </template>
+
+<script lang="ts">
+import { defineComponent, computed, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/useUserStore'
+
+export default defineComponent({
+  name: 'NavBar',
+  setup() {
+    const route = useRoute()
+    const router = useRouter()
+    const userStore = useUserStore()
+    const isMobileMenuOpen = ref(false)
+
+    const showNavBar = computed(() => {
+      return !['/register', '/login', '/'].includes(route.path)
+    })
+
+    const showProfileLink = computed(() => {
+      return !['/register', '/login', '/'].includes(route.path)
+    })
+
+    const toggleMobileMenu = () => {
+      isMobileMenuOpen.value = !isMobileMenuOpen.value
+    }
+
+    const closeMobileMenu = () => {
+      isMobileMenuOpen.value = false
+    }
+
+    const handleLogout = () => {
+      userStore.logout()
+      router.push('/')
+      closeMobileMenu()
+    }
+
+    return {
+      isMobileMenuOpen,
+      showNavBar,
+      showProfileLink,
+      toggleMobileMenu,
+      closeMobileMenu,
+      handleLogout
+    }
+  }
+})
+</script>
+
+<style scoped>
+/* Add any additional styling if needed */
+</style>
