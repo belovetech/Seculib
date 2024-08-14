@@ -65,12 +65,12 @@
     <ul v-if="isMobileMenuOpen" class="sm:hidden mt-4 space-y-4">
       <li>
         <router-link
-          to="/playground"
+          to="/ddos-prevention-dashboard"
           class="block text-center hover:text-gray-300 transition-colors duration-300"
           v-if="showProfileLink"
           @click="closeMobileMenu"
         >
-          Playground
+          Dashboard
         </router-link>
       </li>
       <li>
