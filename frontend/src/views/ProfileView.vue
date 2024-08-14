@@ -31,7 +31,7 @@
         </div>
 
         <div class="bg-gray-50 p-4 rounded-lg shadow-inner">
-          <h3 class="text-lg font-semibold text-gray-700">BorrowedBook count</h3>
+          <h3 class="text-lg font-semibold text-gray-700">BorrowedBook</h3>
           <p class="text-gray-900 text-xl mt-2">{{ borrowedBookData.count }}</p>
         </div>
 

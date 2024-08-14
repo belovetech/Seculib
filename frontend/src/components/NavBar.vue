@@ -44,6 +44,11 @@ export default defineComponent({
     </h1>
     <ul class="flex space-x-4">
       <li>
+        <router-link to="/playground" class="hover:text-gray-300" v-if="showProfileLink">
+          Playground
+        </router-link>
+      </li>
+      <li>
         <router-link to="/profile" class="hover:text-gray-300" v-if="showProfileLink">
           Profile
         </router-link>
