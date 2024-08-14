@@ -30,7 +30,7 @@ export default defineComponent({
 <template>
   <nav v-if="showNavBar" class="bg-blue-600 text-white py-4 px-6 flex justify-between items-center">
     <h1 class="text-2xl font-bold">
-      SecureLib
+      Seculib
       <img src="../assets/dark-logo.svg" alt="Logo" class="h-8 w-8 inline-block" />
     </h1>
     <ul class="flex space-x-4">
@@ -45,7 +45,6 @@ export default defineComponent({
       <li>
         <router-link to="/books" class="hover:text-gray-300">Books</router-link>
       </li>
-      <!-- Add other navigation links here -->
     </ul>
   </nav>
 </template>
