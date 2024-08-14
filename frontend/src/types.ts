@@ -17,3 +17,15 @@ export interface BorrowedBook {
   return_date: string
   student_id: string
 }
+
+export interface User {
+  id: number
+  name: string
+  matric_no: string
+  department: string
+  level: string
+}
+
+export interface State {
+  user: User | null
+}

@@ -1,6 +1,6 @@
 <!-- bg-black -->
 <template>
-  <div class="flex justify-center items-center min-h-screen  p-4">
+  <div class="flex justify-center items-center min-h-screen p-4">
     <div class="w-full max-w-xl bg-gray-800 shadow-lg rounded-lg p-8">
       <h2 class="text-3xl font-extrabold mb-6 text-center text-white">Registration</h2>
       <form @submit.prevent="register">
@@ -76,10 +76,11 @@
         </div>
         <div class="flex items-center justify-between">
           <button
+            :disabled="loading"
             type="submit"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
           >
-            Register
+            <span>{{ loading ? 'Loading...' : 'Register' }}</span>
           </button>
         </div>
       </form>
@@ -109,12 +110,17 @@ export default defineComponent({
     const matricNo = ref('')
     const department = ref('')
     const level = ref('')
+    const loading = ref(false)
 
     const password = ref('')
     const confirmPassword = ref('')
     const BASE_URL = 'https://secure-auth-dos-prevention.onrender.com/api/v1/students'
 
     const register = async () => {
+      if (loading.value) return
+
+      loading.value = true
+
       if (password.value !== confirmPassword.value) {
         alert('Passwords do not match!')
         return
@@ -137,6 +143,8 @@ export default defineComponent({
         const data = error.response?.data as { message: string }
         alert('An error occurred. Please try again.')
         console.error(data.message)
+      } finally {
+        loading.value = false
       }
     }
 
@@ -151,6 +159,7 @@ export default defineComponent({
       level,
       password,
       confirmPassword,
+      loading,
       register,
       goToLogin
     }
