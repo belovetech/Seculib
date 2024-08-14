@@ -1,21 +1,30 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/useUserStore'
 
 export default defineComponent({
   name: 'NavBar',
   setup() {
     const route = useRoute()
+    const router = useRouter()
+    const userStore = useUserStore()
 
     const showNavBar = computed(() => {
       return !['/register', '/login', '/'].includes(route.path)
     })
 
     const showProfileLink = computed(() => {
-      return !['/register', '/login'].includes(route.path)
+      return !['/register', '/login', '/'].includes(route.path)
     })
 
+    const logout = () => {
+      userStore.logout()
+      router.push('/')
+    }
+
     return {
+      logout,
       showNavBar,
       showProfileLink
     }
@@ -35,15 +44,15 @@ export default defineComponent({
     </h1>
     <ul class="flex space-x-4">
       <li>
-        <router-link to="/" class="hover:text-gray-300" v-if="showProfileLink"> Home </router-link>
-      </li>
-      <li>
         <router-link to="/profile" class="hover:text-gray-300" v-if="showProfileLink">
           Profile
         </router-link>
       </li>
       <li>
         <router-link to="/books" class="hover:text-gray-300">Books</router-link>
+      </li>
+      <li>
+        <button class="hover:text-gray-300" @click="logout" v-if="showProfileLink">Logout</button>
       </li>
     </ul>
   </nav>

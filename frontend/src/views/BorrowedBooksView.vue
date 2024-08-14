@@ -1,77 +1,3 @@
-<script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
-import axios from 'axios'
-import type { BorrowedBook } from '@/types'
-
-export default defineComponent({
-  name: 'BorrowedBooksView',
-  setup() {
-    const borrowedBooks = ref<BorrowedBook[]>([])
-    const returning = ref<{ [key: string]: boolean }>({})
-
-    const BASE_URL = 'https://secure-auth-dos-prevention.onrender.com/api/v1'
-
-    const fetchBorrowedBooks = async () => {
-      try {
-        const token = localStorage.getItem('token')
-        if (!token) throw new Error('Token not found')
-
-        const response = await axios.get(`${BASE_URL}/books/borrowed`, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
-
-        borrowedBooks.value = response.data.data.borrowed_books
-      } catch (error) {
-        console.error('Error fetching borrowed books:', error)
-      }
-    }
-
-    const returnBook = async (bookId: string) => {
-      try {
-        const token = localStorage.getItem('token')
-        if (!token) throw new Error('Token not found')
-
-        returning.value[bookId] = true
-
-        await axios.post(
-          `${BASE_URL}/books/return`,
-          { borrowed_book_id: bookId },
-          { headers: { Authorization: `Bearer ${token}` } }
-        )
-
-        fetchBorrowedBooks()
-      } catch (error) {
-        console.error('Error returning book:', error)
-        alert('Failed to return book')
-      } finally {
-        returning.value[bookId] = false
-      }
-    }
-
-    const formatDate = (dateString: string) => {
-      const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' }
-      return new Date(dateString).toLocaleDateString(undefined, options)
-    }
-
-    const goBack = () => {
-      window.history.back()
-    }
-
-    onMounted(() => {
-      fetchBorrowedBooks()
-    })
-
-    return {
-      borrowedBooks,
-      goBack,
-      formatDate,
-      returnBook,
-      returning
-    }
-  }
-})
-</script>
-
 <template>
   <div class="flex justify-center items-center min-h-screen bg-gray-100 p-4 sm:p-12">
     <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 sm:p-8">
@@ -91,7 +17,7 @@ export default defineComponent({
           </thead>
           <tbody class="text-gray-600">
             <tr
-              v-for="book in borrowedBooks"
+              v-for="book in borrowedBookData?.borrowed_books"
               :key="book.id"
               class="border-t border-gray-200 hover:bg-gray-100"
             >
@@ -121,3 +47,69 @@ export default defineComponent({
     </div>
   </div>
 </template>
+
+<script lang="ts">
+import { defineComponent, ref } from 'vue'
+import axios from 'axios'
+import { useUserStore } from '@/stores/useUserStore'
+import { computed } from 'vue'
+
+export default defineComponent({
+  name: 'BorrowedBooksView',
+  setup() {
+    // const borrowedBooks = ref<BorrowedBook | []>([])
+    const returning = ref<{ [key: string]: boolean }>({})
+    const userStore = useUserStore()
+
+    const BASE_URL = 'https://secure-auth-dos-prevention.onrender.com/api/v1'
+
+    const borrowedBookData = computed(() => {
+      return userStore.borrowedBooks
+    })
+
+
+    const returnBook = async (bookId: string) => {
+      try {
+        const token = localStorage.getItem('token')
+        if (!token) throw new Error('Token not found')
+
+        returning.value[bookId] = true
+
+        await axios.post(
+          `${BASE_URL}/books/return`,
+          { borrowed_book_id: bookId },
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
+
+        return userStore.borrowedBook()
+      } catch (error) {
+        console.error('Error returning book:', error)
+        alert('Failed to return book')
+      } finally {
+        returning.value[bookId] = false
+      }
+    }
+
+    const formatDate = (dateString: string) => {
+      const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' }
+      return new Date(dateString).toLocaleDateString(undefined, options)
+    }
+
+    const goBack = () => {
+      window.history.back()
+    }
+
+    // onMounted(() => {
+    //   userStore.borrowedBook()
+    // })
+
+    return {
+      goBack,
+      formatDate,
+      returnBook,
+      returning,
+      borrowedBookData
+    }
+  }
+})
+</script>

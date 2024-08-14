@@ -3,9 +3,9 @@
     <div class="w-full max-w-lg bg-white shadow-lg rounded-lg p-8">
       <h2 class="text-3xl font-extrabold mb-6 text-center text-gray-800">Your Profile</h2>
 
-      <div v-if="loading" class="text-center text-gray-700">Loading profile...</div>
+      <!-- <div v-if="loading" class="text-center text-gray-700">Loading profile...</div> -->
 
-      <div v-else class="space-y-6">
+      <div class="space-y-6">
         <!-- Name -->
         <div class="bg-gray-50 p-4 rounded-lg shadow-inner">
           <h3 class="text-lg font-semibold text-gray-700">Name</h3>
@@ -30,6 +30,11 @@
           <p class="text-gray-900 text-xl mt-2">{{ profile.level }}</p>
         </div>
 
+        <div class="bg-gray-50 p-4 rounded-lg shadow-inner">
+          <h3 class="text-lg font-semibold text-gray-700">BorrowedBook count</h3>
+          <p class="text-gray-900 text-xl mt-2">{{ borrowedBookData.count }}</p>
+        </div>
+
         <!-- Buttons -->
         <div class="flex justify-between mt-8">
           <button
@@ -52,52 +57,43 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
-import axios from 'axios'
+import { defineComponent, onMounted } from 'vue'
 import { useUserStore } from '@/stores/useUserStore'
+import { computed } from 'vue'
+import type { User } from '@/types'
 
 export default defineComponent({
   name: 'ProfileView',
   setup() {
-    const profile = ref({
-      name: '',
-      matric_no: '',
-      department: '',
-      level: ''
-    })
-    const loading = ref(true) // Loading state
     const userStore = useUserStore()
-    const BASE_URL = 'https://secure-auth-dos-prevention.onrender.com/api/v1/students'
-
-    const fetchProfile = async () => {
-      try {
-        const token = localStorage.getItem('token')
-        if (!token) throw new Error('Token not found')
-
-        const response = await axios.get(`${BASE_URL}/profile`, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
-
-        profile.value = response.data.data
-        userStore.currentUser(response.data.data)
-      } catch (error) {
-        console.error('Error fetching profile:', error)
-      } finally {
-        loading.value = false // Set loading to false after data is fetched
-      }
+    const user: User = {
+      department: '',
+      id: 0,
+      level: '',
+      matric_no: '',
+      name: ''
     }
+
+    const profile = computed(() => {
+      return userStore.user ?? user
+    })
+
+    const borrowedBookData = computed(() => {
+      return userStore.borrowedBooks
+    })
 
     const goBack = () => {
       window.history.back()
     }
 
-    onMounted(() => {
-      fetchProfile()
+    onMounted(async () => {
+      await userStore.getUserProfile()
+      await userStore.borrowedBook()
     })
 
     return {
       profile,
-      loading,
+      borrowedBookData,
       goBack
     }
   }

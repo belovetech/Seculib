@@ -73,6 +73,7 @@
             class="shadow appearance-none border border-gray-600 rounded w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline bg-gray-700"
             required
           />
+          <span v-if="isError" class="text-red-600 text-xs font-semibold">{{ errorMsg }}</span>
         </div>
         <div class="flex items-center justify-between">
           <button
@@ -106,14 +107,18 @@ export default defineComponent({
   name: 'RegisterView',
   setup() {
     const router = useRouter()
+
     const name = ref('')
     const matricNo = ref('')
     const department = ref('')
     const level = ref('')
-    const loading = ref(false)
-
     const password = ref('')
     const confirmPassword = ref('')
+
+    const loading = ref(false)
+    const isError = ref(false)
+    const errorMsg = ref('')
+
     const BASE_URL = 'https://secure-auth-dos-prevention.onrender.com/api/v1/students'
 
     const register = async () => {
@@ -122,12 +127,14 @@ export default defineComponent({
       loading.value = true
 
       if (password.value !== confirmPassword.value) {
-        alert('Passwords do not match!')
+        isError.value = true
+        errorMsg.value = 'Passwords do not match!'
+        loading.value = false
         return
       }
 
       try {
-        const response = await axios.post(`${BASE_URL}/register`, {
+        await axios.post(`${BASE_URL}/register`, {
           name: name.value,
           matric_no: matricNo.value,
           department: department.value,
@@ -135,14 +142,12 @@ export default defineComponent({
           password: password.value
         })
 
-        const message = response.data.message
-        alert(message)
         router.push('/login')
       } catch (e) {
         const error = e as AxiosError
         const data = error.response?.data as { message: string }
-        alert('An error occurred. Please try again.')
-        console.error(data.message)
+        isError.value = true
+        errorMsg.value = data.message
       } finally {
         loading.value = false
       }
@@ -160,6 +165,8 @@ export default defineComponent({
       password,
       confirmPassword,
       loading,
+      errorMsg,
+      isError,
       register,
       goToLogin
     }

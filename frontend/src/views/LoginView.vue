@@ -22,6 +22,7 @@
             class="shadow appearance-none border border-gray-600 rounded w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline bg-gray-700"
             required
           />
+          <span v-if="isError" class="text-red-600 text-xs font-semibold">{{ errorMsg }}</span>
         </div>
         <div class="flex items-center justify-between">
           <button
@@ -48,13 +49,15 @@ export default defineComponent({
     const router = useRouter()
     const matricNo = ref('')
     const password = ref('')
-    const loading = ref(false) // Loading state
+    const loading = ref(false)
     const BASE_URL = 'https://secure-auth-dos-prevention.onrender.com/api/v1/students'
+    const isError = ref(false)
+    const errorMsg = ref('')
 
     const login = async () => {
-      if (loading.value) return // Prevent multiple requests
+      if (loading.value) return
 
-      loading.value = true // Set loading to true
+      loading.value = true
 
       try {
         const response = await axios.post(`${BASE_URL}/login`, {
@@ -64,11 +67,12 @@ export default defineComponent({
 
         const { token } = response.data.data
         localStorage.setItem('token', token)
-        router.push('/profile')
+        router.push('/books')
       } catch (e) {
         const error = e as AxiosError
         const message = (error.response?.data as { message: string })?.message || 'Login failed'
-        alert(message)
+        isError.value = true
+        errorMsg.value = message
       } finally {
         loading.value = false // Set loading to false after request is done
       }
@@ -78,6 +82,8 @@ export default defineComponent({
       matricNo,
       password,
       loading,
+      isError,
+      errorMsg,
       login
     }
   }

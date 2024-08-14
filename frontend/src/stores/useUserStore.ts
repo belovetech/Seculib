@@ -1,9 +1,13 @@
 import { defineStore } from 'pinia'
 import type { State, User } from '@/types'
+import axios from 'axios'
+
+const BASE_URL = 'https://secure-auth-dos-prevention.onrender.com/api/v1'
 
 export const useUserStore = defineStore('user', {
   state: (): State => ({
-    user: null
+    user: null,
+    borrowedBooks: { borrowed_books: [], count: 0 }
   }),
   actions: {
     currentUser(user: User) {
@@ -13,7 +17,38 @@ export const useUserStore = defineStore('user', {
       this.user = user
     },
     logout() {
+      localStorage.removeItem('token')
       this.user = null
+    },
+
+    async getUserProfile() {
+      try {
+        const token = localStorage.getItem('token')
+        if (!token) throw new Error('Token not found')
+
+        const response = await axios.get(`${BASE_URL}/students/profile`, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+
+        this.user = response.data.data
+      } catch (error) {
+        console.error('Error fetching profile:', error)
+      }
+    },
+
+    async borrowedBook() {
+      try {
+        const token = localStorage.getItem('token')
+        if (!token) throw new Error('Token not found')
+
+        const response = await axios.get(`${BASE_URL}/books/borrowed`, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+
+        this.borrowedBooks = response.data.data
+      } catch (error) {
+        console.error('Error fetching borrowed books:', error)
+      }
     }
   },
   getters: {
