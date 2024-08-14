@@ -24,12 +24,12 @@
       <ul class="hidden sm:flex space-x-4">
         <li>
           <router-link
-            to="/playground"
+            to="/ddos-prevention-dashboard"
             class="hover:text-gray-300 transition-colors duration-300"
             v-if="showProfileLink"
             @click="closeMobileMenu"
           >
-            Playground
+            Dashboard
           </router-link>
         </li>
         <li>

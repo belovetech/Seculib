@@ -5,7 +5,7 @@ import RegisterView from '../views/RegisterView.vue'
 import BookListView from '../components/BookList.vue'
 import ProfileView from '../views/ProfileView.vue'
 import BorrowedBooksView from '../views/BorrowedBooksView.vue'
-import PlayGroundView from '../views/PlayGroundView.vue'
+import DashBoardView from '../views/DashBoardView.vue'
 
 const routes = [
   {
@@ -39,9 +39,9 @@ const routes = [
     component: BorrowedBooksView
   },
   {
-    path: '/playground',
-    name: 'PlayGround',
-    component: PlayGroundView
+    path: '/ddos-prevention-dashboard',
+    name: 'ddos-prevention-dashboard',
+    component: DashBoardView
   }
 ]
 

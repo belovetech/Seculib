@@ -31,3 +31,12 @@ export interface State {
   user: User | null
   borrowedBooks: BorrowedBook
 }
+
+export interface DDOSAttempt {
+  id: number
+  ip_address: string
+  request_count: number
+  attempt_date: string
+  attack_type: string
+  status: string
+}
