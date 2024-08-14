@@ -1,5 +1,6 @@
+<!-- bg-black -->
 <template>
-  <div class="flex justify-center items-center min-h-screen bg-black p-4">
+  <div class="flex justify-center items-center min-h-screen  p-4">
     <div class="w-full max-w-xl bg-gray-800 shadow-lg rounded-lg p-8">
       <h2 class="text-3xl font-extrabold mb-6 text-center text-white">Registration</h2>
       <form @submit.prevent="register">

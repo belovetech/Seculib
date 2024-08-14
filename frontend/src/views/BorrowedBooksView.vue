@@ -73,7 +73,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="flex justify-center items-center bg-gray-100">
+  <div class="flex justify-center items-center h-screen bg-gray-100 p-12">
     <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-8">
       <h2 class="text-3xl font-extrabold mb-6 text-center text-gray-800">Borrowed Books</h2>
       <table class="min-w-full bg-white border border-gray-200">

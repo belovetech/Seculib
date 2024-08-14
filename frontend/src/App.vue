@@ -11,12 +11,18 @@ export default defineComponent({
 </script>
 
 <template>
-  <div id="app">
+  <div id="app" class="container mx-auto px-4">
     <Navbar />
     <router-view />
   </div>
 </template>
 
 <style>
-/* Global styles */
+/* #app { */
+/* max-width: 1260px; */
+/* max-height: 100vh; */
+/* margin: 0 auto; */
+/* padding: 2rem; */
+/* font-weight: normal; */
+/* } */
 </style>

@@ -7,19 +7,31 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="text-center py-20">
-    <h1 class="text-4xl font-bold">
-      Welcome to the SecureLib
-      <img src="../assets/white-logo.svg" alt="Logo" class="h-12 w-12 inline-block" />
+  <div class="flex flex-col justify-center items-center min-h-screen bg-gray-900 text-center">
+    <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
+      Welcome to Seculib
+      <img
+        src="../assets/white-logo.svg"
+        alt="Logo"
+        class="h-10 w-10 sm:h-12 sm:w-12 inline-block ml-2"
+      />
     </h1>
-    <p class="mt-4">Access a wide range of books. Register, Login, and Start Borrowing!</p>
-    <div class="mt-8">
-      <router-link to="/register" class="bg-blue-500 text-white py-2 px-4 rounded"
-        >Register</router-link
+    <p class="mt-4 text-gray-300 sm:text-lg">
+      Access a wide range of books. Register, Login, and Start Borrowing!
+    </p>
+    <div class="mt-8 flex flex-col sm:flex-row gap-4">
+      <router-link
+        to="/register"
+        class="bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-700 transition"
       >
-      <router-link to="/login" class="bg-green-500 text-white py-2 px-4 rounded ml-4"
-        >Login</router-link
+        Register
+      </router-link>
+      <router-link
+        to="/login"
+        class="bg-green-500 text-white py-2 px-6 rounded hover:bg-green-700 transition"
       >
+        Login
+      </router-link>
     </div>
   </div>
 </template>

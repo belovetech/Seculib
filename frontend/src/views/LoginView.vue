@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center items-center h-screen bg-black">
+  <div class="flex justify-center items-center h-screen">
     <div class="w-full max-w-md bg-gray-800 shadow-lg rounded-lg p-8">
       <h2 class="text-3xl font-extrabold mb-6 text-center text-white">Login</h2>
       <form @submit.prevent="login">
