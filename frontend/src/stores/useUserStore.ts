@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import type { State, User } from '@/types'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
+import { useRouter } from 'vue-router'
 
 const BASE_URL = 'https://secure-auth-dos-prevention.onrender.com/api/v1'
 
@@ -8,6 +9,7 @@ export const useUserStore = defineStore('user', {
   state: (): State => ({
     user: null,
     borrowedBooks: { borrowed_books: [], count: 0 }
+    // router: useRouter()
   }),
   actions: {
     currentUser(user: User) {
@@ -31,8 +33,14 @@ export const useUserStore = defineStore('user', {
         })
 
         this.user = response.data.data
-      } catch (error) {
-        console.error('Error fetching profile:', error)
+      } catch (e) {
+        const error = e as AxiosError
+        if (error.response?.status === 401) {
+          console.error('Unauthorized')
+          this.logout()
+          // this.router.push('/login')
+        }
+        console.error('Error fetching profile:', e)
       }
     },
 

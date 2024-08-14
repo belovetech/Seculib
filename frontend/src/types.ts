@@ -1,3 +1,5 @@
+import type { Router } from 'vue-router'
+
 export interface Book {
   id: string
   title: string
@@ -30,6 +32,7 @@ export interface User {
 export interface State {
   user: User | null
   borrowedBooks: BorrowedBook
+  // router: Router
 }
 
 export interface DDOSAttempt {
