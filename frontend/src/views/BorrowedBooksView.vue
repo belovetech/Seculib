@@ -1,6 +1,6 @@
 <template>
-  <div class="flex justify-center items-center min-h-screen bg-gray-100 p-4 sm:p-12">
-    <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 sm:p-8">
+  <div class="flex justify-center items-start min-h-screen bg-gray-100 p-4 sm:p-12">
+    <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6  sm:p-8">
       <h2 class="text-2xl sm:text-3xl font-extrabold mb-6 text-center text-gray-800">
         Borrowed Books
       </h2>

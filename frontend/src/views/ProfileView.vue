@@ -1,9 +1,7 @@
 <template>
   <div class="min-h-screen bg-gray-100 flex flex-col items-center p-4 sm:p-12">
-    <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg sm:mt-20 p-6 sm:p-8">
-      <h2 class="text-2xl sm:text-3xl font-extrabold mb-6 text-center text-gray-800">
-        Your Profile
-      </h2>
+    <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 sm:p-8">
+      <h2 class="text-2xl sm:text-3xl font-extrabold mb-6 text-center text-gray-800">Details</h2>
 
       <!-- Profile Information Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
