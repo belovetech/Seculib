@@ -6,7 +6,7 @@ import BookListView from '../components/BookList.vue'
 import ProfileView from '../views/ProfileView.vue'
 import BorrowedBooksView from '../views/BorrowedBooksView.vue'
 import DashBoardView from '../views/DashBoardView.vue'
-import { useUserStore } from '@/stores/useUserStore' // Assuming you're using Pinia or a similar store
+import { useUserStore } from '@/stores/useUserStore'
 
 const routes = [
   {
@@ -61,7 +61,7 @@ router.beforeEach((to, from, next) => {
   // Check if the route requires authentication
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // If the user is not logged in, redirect to the login page
-    if (!userStore.isAuthenticated) {
+    if (!userStore.isUserAuthenticated) {
       next({ name: 'Login' })
     } else {
       next() // Proceed to the route

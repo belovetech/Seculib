@@ -8,7 +8,8 @@ const BASE_URL = 'https://secure-auth-dos-prevention.onrender.com/api/v1'
 export const useUserStore = defineStore('user', {
   state: (): State => ({
     user: null,
-    borrowedBooks: { borrowed_books: [], count: 0 }
+    borrowedBooks: { borrowed_books: [], count: 0 },
+    isUserAuthenticated: !!localStorage.getItem('token')
     // router: useRouter()
   }),
   actions: {
@@ -17,10 +18,12 @@ export const useUserStore = defineStore('user', {
     },
     login(user: User) {
       this.user = user
+      this.isUserAuthenticated = true
     },
     logout() {
       localStorage.removeItem('token')
       this.user = null
+      this.isUserAuthenticated = false
     },
 
     async getUserProfile() {
