@@ -41,11 +41,13 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/useUserStore'
 import axios, { AxiosError } from 'axios'
 
 export default defineComponent({
   name: 'LoginView',
   setup() {
+    const userStore = useUserStore()
     const router = useRouter()
     const matricNo = ref('')
     const password = ref('')
@@ -67,13 +69,14 @@ export default defineComponent({
 
         const { token } = response.data.data
         localStorage.setItem('token', token)
-        router.push('/books')
+        userStore.isUserAuthenticated = true
       } catch (e) {
         const error = e as AxiosError
         const message = (error.response?.data as { message: string })?.message || 'Login failed'
         isError.value = true
         errorMsg.value = message
       } finally {
+        router.push('/books')
         loading.value = false // Set loading to false after request is done
       }
     }

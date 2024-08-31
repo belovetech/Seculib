@@ -32,6 +32,7 @@ export interface User {
 export interface State {
   user: User | null
   borrowedBooks: BorrowedBook
+  isUserAuthenticated: boolean
   // router: Router
 }
 
