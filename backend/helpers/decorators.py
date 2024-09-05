@@ -21,10 +21,10 @@ def token_required(f):
         try:
             token = bearerToken.split(' ')[1]
             data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-            # session_id = data['session_id']
-            # session = session_manager.get_session_by_session_id(session_id)
-            # if session is None:
-            #     return jsonify({'message': 'Session expired or you have logged in with another browser. Kindly login to create a new session'}), 401
+            session_id = data['session_id']
+            session = session_manager.get_session_by_session_id(session_id)
+            if session is None:
+                return jsonify({'message': 'Session expired or you have logged in with another browser. Kindly login to create a new session'}), 401
         except jwt.PyJWTError:
             return jsonify({'message': 'Token is invalid!'}), 401
 
@@ -35,7 +35,7 @@ def token_required(f):
 
 
 
-rate_limit = RateLimitMiddleware(rate_limit=300, time_window=60)
+rate_limit = RateLimitMiddleware(rate_limit=10, time_window=60)
 def rate_limiter(endpoint):
     def decorator(f):
         @wraps(f)

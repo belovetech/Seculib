@@ -4,11 +4,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from api.library.views import app_views
 from models.engine.db import db
 from models.engine.student_manager import StudentManager
-from helpers.decorators import token_required
+from helpers.decorators import token_required, rate_limiter
 
 
 SECRET_KEY = os.getenv('SECRET_KEY')
-
 student_manager = StudentManager(db)
 
 
@@ -48,8 +47,6 @@ def register():
             level=data['level'],
             password=generate_password_hash(data['password'])
         )
-        print(student)
-        # del student["password"]
         return jsonify({'message': 'Student registered successfully!', 'data':student}), 201
     except KeyError as e:
         print(e)

@@ -10,7 +10,6 @@ from models.engine.book_borrow_manager import BorrowBookManager
 book_manager = BookManager(db)
 book_borrow_manager = BorrowBookManager(db)
 
-
 @app_views.route('/books', methods=['GET'])
 @rate_limiter('/books')
 def get_available_books():
@@ -30,6 +29,7 @@ def get_available_books():
 
 
 @app_views.route('/books/<book_id>', methods=['GET'])
+@rate_limiter('/books/<book_id>')
 def get_book(book_id):
     try:
        book = book_manager.get_book_by_id(book_id)

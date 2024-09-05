@@ -17,7 +17,7 @@ pip install -r requirements.txt
 
 # Run App Locally
 
-`flask run --debug`
+`flask --app api.app run -p 3000`
 
 # Run app using Docker
 
