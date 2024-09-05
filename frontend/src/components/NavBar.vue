@@ -22,7 +22,7 @@
         </svg>
       </button>
       <ul class="hidden sm:flex space-x-4">
-        <li>
+        <!-- <li>
           <router-link
             to="/ddos-prevention-dashboard"
             class="hover:text-gray-300 transition-colors duration-300"
@@ -31,7 +31,7 @@
           >
             Dashboard
           </router-link>
-        </li>
+        </li> -->
         <li>
           <router-link
             to="/profile"
@@ -63,7 +63,7 @@
       </ul>
     </div>
     <ul v-if="isMobileMenuOpen" class="sm:hidden mt-4 space-y-4">
-      <li>
+      <!-- <li>
         <router-link
           to="/ddos-prevention-dashboard"
           class="block text-center hover:text-gray-300 transition-colors duration-300"
@@ -72,7 +72,7 @@
         >
           Dashboard
         </router-link>
-      </li>
+      </li> -->
       <li>
         <router-link
           to="/profile"

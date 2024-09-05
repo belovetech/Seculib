@@ -5,7 +5,7 @@ import RegisterView from '../views/RegisterView.vue'
 import BookListView from '../components/BookList.vue'
 import ProfileView from '../views/ProfileView.vue'
 import BorrowedBooksView from '../views/BorrowedBooksView.vue'
-import DashBoardView from '../views/DashBoardView.vue'
+// import DashBoardView from '../views/DashBoardView.vue'
 import { useUserStore } from '@/stores/useUserStore'
 
 const routes = [
@@ -28,26 +28,26 @@ const routes = [
     path: '/books',
     name: 'Books',
     component: BookListView,
-    meta: { requiresAuth: true } 
+    meta: { requiresAuth: true }
   },
   {
     path: '/profile',
     name: 'Profile',
-    component: ProfileView, 
-    meta: { requiresAuth: true } 
+    component: ProfileView,
+    meta: { requiresAuth: true }
   },
-  { 
-    path: '/borrowed-books', 
-    name: 'BorrowedBooks', 
-    component: BorrowedBooksView, 
-    meta: { requiresAuth: true } 
-  },
-  { 
-    path: '/ddos-prevention-dashboard', 
-    name: 'ddos-prevention-dashboard', 
-    component: DashBoardView, 
-    meta: { requiresAuth: true } 
+  {
+    path: '/borrowed-books',
+    name: 'BorrowedBooks',
+    component: BorrowedBooksView,
+    meta: { requiresAuth: true }
   }
+  // {
+  //   path: '/ddos-prevention-dashboard',
+  //   name: 'ddos-prevention-dashboard',
+  //   component: DashBoardView,
+  //   meta: { requiresAuth: true }
+  // }
 ]
 
 const router = createRouter({
@@ -57,9 +57,9 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const userStore = useUserStore()
-  
+
   // Check if the route requires authentication
-  if (to.matched.some(record => record.meta.requiresAuth)) {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
     // If the user is not logged in, redirect to the login page
     if (!userStore.isUserAuthenticated) {
       next({ name: 'Login' })
