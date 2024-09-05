@@ -3,11 +3,13 @@ from functools import wraps
 from flask import request, jsonify
 import jwt
 from models.engine.session_manager import SessionManager
+from helpers.middlewares import RateLimitMiddleware
 from models.engine.db import db
 
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 session_manager = SessionManager(db)
+
 
 def token_required(f):
     @wraps(f)
@@ -30,3 +32,18 @@ def token_required(f):
         return f(*args, **kwargs)
 
     return decorated_function
+
+
+
+rate_limit = RateLimitMiddleware(rate_limit=300, time_window=60)
+def rate_limiter(endpoint):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            client_ip = request.remote_addr
+
+            if rate_limit.is_rate_limited(client_ip, endpoint):
+                return jsonify({"error": "Too many requests"}), 429
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator

@@ -9,3 +9,4 @@ app_views = Blueprint('app_views', __name__, url_prefix="/api/v1")
 if app_views:
    from api.library.views.student import *
    from api.library.views.book import *
+   from api.library.views.ddos import *

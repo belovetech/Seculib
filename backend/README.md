@@ -7,6 +7,8 @@
 
 python3 -m venv .venv
 
+source .venv/bin/activate
+
 2. Install the requirement
 
 pip install -r requirements.txt

@@ -1,14 +1,13 @@
-import os
 import hashlib
+from functools import wraps
 from flask import request, jsonify
 from helpers.redis_client import redis_client
+
 class RateLimitMiddleware:
-    def __init__(self, app, rate_limit=100, time_window=60):
-        self.app = app
+    def __init__(self, rate_limit=100, time_window=60):
         self.rate_limit = rate_limit
         self.time_window = time_window
         self.redis_client = redis_client
-        self.app.before_request(self.before_request)
 
     def get_client_key(self, client_ip, endpoint):
         raw_key = f"{client_ip}:{endpoint}"
@@ -30,11 +29,4 @@ class RateLimitMiddleware:
 
         self.redis_client.incr(client_key)
         return False
-
-    def before_request(self):
-        client_ip = request.remote_addr
-        endpoint = request.path
-
-        if self.is_rate_limited(client_ip, endpoint):
-            return jsonify({"error": "Too many requests"}), 429
 

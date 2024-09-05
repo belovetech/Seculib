@@ -1,6 +1,6 @@
 import datetime
 from flask import  jsonify, request
-from helpers.decorators import token_required
+from helpers.decorators import token_required, rate_limiter
 from api.library.views import app_views
 from models.engine.db import db
 from models.engine.book_manager import BookManager
@@ -12,10 +12,17 @@ book_borrow_manager = BorrowBookManager(db)
 
 
 @app_views.route('/books', methods=['GET'])
+@rate_limiter('/books')
 def get_available_books():
     try:
-       books = book_manager.get_available_books()
-       return jsonify({'message': 'Book fetch successfully', 'data': books, 'count': len(books)}), 200
+        books = book_manager.get_available_books()
+
+        ip_address = request.remote_addr
+        user_agent = request.headers.get('User-Agent')
+        request_url = request.url
+        print(f"IP Address: {ip_address}, User Agent: {user_agent}, Request URL: {request_url}")
+
+        return jsonify({'message': 'Book fetch successfully', 'data': books, 'count': len(books)}), 200
     except Exception as e:
         print("Get books error: ", e)
         return jsonify({'message': "Unable to fetch book from the library"}), 500
