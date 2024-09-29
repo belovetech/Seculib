@@ -70,6 +70,13 @@ export default defineComponent({
         const { token } = response.data.data
         localStorage.setItem('token', token)
         userStore.isUserAuthenticated = true
+
+        if (response.data.is_admin) {
+          userStore.isAdmin = true
+          router.push('/admin')
+        } else {
+          router.push('/books')
+        }
       } catch (e) {
         const error = e as AxiosError
         const message = (error.response?.data as { message: string })?.message || 'Login failed'

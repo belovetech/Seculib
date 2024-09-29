@@ -143,6 +143,8 @@ export default defineComponent({
         })
 
         router.push('/login')
+
+        // Todo: store token and redirect to /books
       } catch (e) {
         const error = e as AxiosError
         const data = error.response?.data as { message: string }

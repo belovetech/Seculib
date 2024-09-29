@@ -81,8 +81,9 @@ def login():
         if not token:
             return jsonify({'message': 'Invalid credentials!'}), 401
 
-        return jsonify({'message': 'Logged in!', 'data': {'token': token}}), 200
+        return jsonify({'message': 'Logged in!', 'data': token}), 200
     except Exception as e:
+        print(e)
         return jsonify({'message': 'An error occurred!'}), 500
 
 

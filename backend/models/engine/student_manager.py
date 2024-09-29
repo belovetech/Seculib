@@ -47,7 +47,11 @@ class StudentManager(SessionManager):
             if not student or not check_password_hash(student.password, password):
                 raise Exception('Invalid credentials!', 401)
 
-            return self.create_token(student_id=student.id, matric_no=matric_no, role=student.role)
+            token = self.create_token(
+                student_id=student.id, matric_no=matric_no, role=student.role)
+            is_admin = self.is_admin(student.id)
+
+            return {'token': token, 'is_admin': is_admin}
         except Exception as e:
             print("Login student error: ", e)
             return None
@@ -105,3 +109,10 @@ class StudentManager(SessionManager):
         except Exception as e:
             print("Create token error: ", e)
             return None
+
+    def is_admin(self, student_id):
+        student = self.db.session.query(Student).filter(
+            Student.id == student_id).first()
+        if student:
+            return student.role == 'admin'
+        return False

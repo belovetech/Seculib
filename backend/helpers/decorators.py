@@ -48,7 +48,7 @@ def rate_limiter(f):
     def decorated_function(*args, **kwargs):
         client_ip = request.remote_addr
         authenticated_requests_per_minute = 100
-        unauthenticated_requests_per_minute = 3
+        unauthenticated_requests_per_minute = 5
         time_window = 60
         endpoint = request.path
 

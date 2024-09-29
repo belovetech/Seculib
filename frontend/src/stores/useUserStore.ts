@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import type { State, User } from '@/types'
 import axios, { AxiosError } from 'axios'
-import { useRouter } from 'vue-router'
+// import { useRouter } from 'vue-router'
 
 const BASE_URL = 'https://secure-auth-dos-prevention.onrender.com/api/v1'
 
@@ -9,8 +9,8 @@ export const useUserStore = defineStore('user', {
   state: (): State => ({
     user: null,
     borrowedBooks: { borrowed_books: [], count: 0 },
-    isUserAuthenticated: !!localStorage.getItem('token')
-    // router: useRouter()
+    isUserAuthenticated: !!localStorage.getItem('token'),
+    isAdmin: false
   }),
   actions: {
     currentUser(user: User) {
@@ -63,6 +63,7 @@ export const useUserStore = defineStore('user', {
     }
   },
   getters: {
-    isAuthenticated: (state) => !!state.user
+    isAuthenticated: (state) => !!state.user,
+    isAdmin: (state) => state.isAdmin
   }
 })

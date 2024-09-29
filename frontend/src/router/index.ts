@@ -5,6 +5,7 @@ import RegisterView from '../views/RegisterView.vue'
 import BookListView from '../components/BookList.vue'
 import ProfileView from '../views/ProfileView.vue'
 import BorrowedBooksView from '../views/BorrowedBooksView.vue'
+import AdminView from '../views/AdminView.vue'
 // import DashBoardView from '../views/DashBoardView.vue'
 import { useUserStore } from '@/stores/useUserStore'
 
@@ -41,13 +42,13 @@ const routes = [
     name: 'BorrowedBooks',
     component: BorrowedBooksView,
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: AdminView,
+    // meta: { requiresAuth: true }
   }
-  // {
-  //   path: '/ddos-prevention-dashboard',
-  //   name: 'ddos-prevention-dashboard',
-  //   component: DashBoardView,
-  //   meta: { requiresAuth: true }
-  // }
 ]
 
 const router = createRouter({

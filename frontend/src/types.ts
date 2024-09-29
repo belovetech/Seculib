@@ -33,7 +33,7 @@ export interface State {
   user: User | null
   borrowedBooks: BorrowedBook
   isUserAuthenticated: boolean
-  // router: Router
+  isAdmin: boolean
 }
 
 export interface DDOSAttempt {
