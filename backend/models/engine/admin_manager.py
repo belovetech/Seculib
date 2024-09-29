@@ -1,8 +1,9 @@
 from models.book import Book, BorrowedBook
 from models.student import Student, Session
+from models.engine.book_manager import BookManager
 
 
-class AdminManager:
+class AdminManager(BookManager):
     def __init__(self, db):
         self.db = db
 
@@ -12,7 +13,7 @@ class AdminManager:
                 Student.role == 'student').count()
             admins = self.db.session.query(Student).filter(
                 Student.role == 'admin').count()
-            available_books = self.db.session.query(Book).count()
+            available_books = len(self.get_available_books())
             borrowed_books = self.db.session.query(BorrowedBook).count()
             sessions = self.db.session.query(Session).count()
 

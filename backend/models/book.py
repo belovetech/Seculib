@@ -16,7 +16,7 @@ class BorrowedBook(db.Model):
     __tablename__ = 'borrowed_books'
 
     id = db.Column(db.String(36), primary_key=True)
-    book_id = db.Column(db.String(25), db.ForeignKey('books.id'))
-    student_id = db.Column(db.String(25), db.ForeignKey('students.id'))
+    book_id = db.Column(db.String(36), db.ForeignKey('books.id'))
+    student_id = db.Column(db.String(36), db.ForeignKey('students.id'))
     borrow_date = db.Column(db.DateTime)
     return_date = db.Column(db.DateTime)
