@@ -11,8 +11,7 @@ Seculib is a secure library management system designed to facilitate the registr
 - [Getting Started](#getting-started)
 - [Backend Setup](#backend-setup)
 - [Frontend Setup](#frontend-setup)
-- [Contributing](#contributing)
-- [License](#license)
+
 
 ## Overview
 
@@ -61,3 +60,10 @@ For instructions on setting up the backend API, refer to the [Backend README](ht
 ### Frontend Setup
 
 For instructions on setting up the frontend application, refer to the [Frontend README](https://github.com/belovetech/secure-auth-dos-prevention/blob/4a0a1648a3d12050e39765875732b5e81188f098/frontend/README.md).
+
+
+
+TODO:
+1. Create admin dashboard to monitor both legitimate and unauthroised user activities on the seculib
+
+2. Make all the endpoint protected.

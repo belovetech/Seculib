@@ -19,6 +19,10 @@ pip install -r requirements.txt
 
 `flask --app api.app run -p 3000`
 
+# Seed book
+
+`flask --app api.app seed_books`
+
 # Run app using Docker
 
 `./startup.sh`

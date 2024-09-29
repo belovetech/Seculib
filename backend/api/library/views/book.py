@@ -1,5 +1,5 @@
 import datetime
-from flask import  jsonify, request
+from flask import jsonify, request
 from helpers.decorators import token_required, rate_limiter
 from api.library.views import app_views
 from models.engine.db import db
@@ -10,33 +10,27 @@ from models.engine.book_borrow_manager import BorrowBookManager
 book_manager = BookManager(db)
 book_borrow_manager = BorrowBookManager(db)
 
+
 @app_views.route('/books', methods=['GET'])
-@rate_limiter('/books')
+@rate_limiter
 def get_available_books():
     try:
         books = book_manager.get_available_books()
-
-        ip_address = request.remote_addr
-        user_agent = request.headers.get('User-Agent')
-        request_url = request.url
-        print(f"IP Address: {ip_address}, User Agent: {user_agent}, Request URL: {request_url}")
-
         return jsonify({'message': 'Book fetch successfully', 'data': books, 'count': len(books)}), 200
     except Exception as e:
         print("Get books error: ", e)
         return jsonify({'message': "Unable to fetch book from the library"}), 500
 
 
-
 @app_views.route('/books/<book_id>', methods=['GET'])
-@rate_limiter('/books/<book_id>')
+@rate_limiter
 def get_book(book_id):
     try:
-       book = book_manager.get_book_by_id(book_id)
-       if not book:
-              return jsonify({'message': 'Book not found!'}), 404
+        book = book_manager.get_book_by_id(book_id)
+        if not book:
+            return jsonify({'message': 'Book not found!'}), 404
 
-       return jsonify({'message': 'Book fetch successfully', 'data': book}), 200
+        return jsonify({'message': 'Book fetch successfully', 'data': book}), 200
     except Exception as e:
         print("Get book error: ", e)
         return jsonify({'message': "Unable to fetch book from the library"}), 500
@@ -83,7 +77,8 @@ def return_book():
             return jsonify({'message': 'borrowed_book_id is required'}), 400
 
         borrowed_book_id = data['borrowed_book_id']
-        borrowed_book = book_borrow_manager.get_borrowed_book_by_id(borrowed_book_id)
+        borrowed_book = book_borrow_manager.get_borrowed_book_by_id(
+            borrowed_book_id)
 
         if not borrowed_book:
             return jsonify({'message': 'Borrowed book not found!'}), 404
@@ -93,7 +88,6 @@ def return_book():
         if borrowed_book['student_id'] != request.student_data['student_id']:
             return jsonify({'message': 'Forbidden!'}), 403
 
-
         book_borrow_manager.return_book(data['borrowed_book_id'])
         return jsonify({'message': 'Book returned successfully!'}), 200
     except Exception as e:
@@ -101,14 +95,13 @@ def return_book():
         return jsonify({'message': "Unable to return book to the library"}), 500
 
 
-
-
 @app_views.route('/books/borrowed', methods=['GET'])
 @token_required
 def get_book_borrowed_by_student():
     try:
         student_id = request.student_data['student_id']
-        borrowed_books = book_borrow_manager.get_book_borrowed_by_student(student_id)
+        borrowed_books = book_borrow_manager.get_book_borrowed_by_student(
+            student_id)
         return jsonify({
             'message': 'Borrowed book fetch successfully',
             'data': {

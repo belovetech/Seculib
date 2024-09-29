@@ -1,6 +1,6 @@
 import os
-from flask import  jsonify, request
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import jsonify, request
+from werkzeug.security import generate_password_hash
 from api.library.views import app_views
 from models.engine.db import db
 from models.engine.student_manager import StudentManager
@@ -12,6 +12,7 @@ student_manager = StudentManager(db)
 
 
 @app_views.route('students/register', methods=['POST'])
+@rate_limiter
 def register():
     try:
         data = request.get_json()
@@ -34,20 +35,21 @@ def register():
         if 'password' not in data:
             return jsonify({'message': 'password is required'}), 400
 
-
-        student_with_matric_no_exists = student_manager.get_student_by_matric_no(data['matric_no'])
+        student_with_matric_no_exists = student_manager.get_student_by_matric_no(
+            data['matric_no'])
 
         if student_with_matric_no_exists:
             return jsonify({'message': 'User already exists!'}), 409
 
-        student =  student_manager.register_student(
+        token = student_manager.register_student(
             name=data['name'],
             matric_no=data['matric_no'],
             department=data['department'],
             level=data['level'],
-            password=generate_password_hash(data['password'])
+            password=generate_password_hash(data['password']),
+            role='student'
         )
-        return jsonify({'message': 'Student registered successfully!', 'data':student}), 201
+        return jsonify({'message': 'Student registered successfully!', 'data': {'token': token}}), 201
     except KeyError as e:
         print(e)
         return jsonify({'message': 'Missing data!'}), 400
@@ -55,7 +57,9 @@ def register():
         print(e)
         return jsonify({'message': 'An error occurred!'}), 500
 
+
 @app_views.route('students/login', methods=['POST'])
+@rate_limiter
 def login():
     try:
         data = request.get_json()
@@ -77,7 +81,7 @@ def login():
         if not token:
             return jsonify({'message': 'Invalid credentials!'}), 401
 
-        return jsonify({'message': 'Logged in!', 'data': {'token':token}}), 200
+        return jsonify({'message': 'Logged in!', 'data': {'token': token}}), 200
     except Exception as e:
         return jsonify({'message': 'An error occurred!'}), 500
 
@@ -89,7 +93,7 @@ def profile():
         data = request.student_data
 
         student = student_manager.get_student_by_matric_no(data['metric_no'])
-        del student['password'] # Remove password from the response
+        del student['password']  # Remove password from the response
 
         return jsonify({'data': student, "message": "Student profile fetched successfully"}), 200
     except Exception as e:

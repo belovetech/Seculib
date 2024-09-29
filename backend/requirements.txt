@@ -14,6 +14,7 @@ Flask-Cors==4.0.1
 Flask-Migrate==4.0.7
 Flask-SQLAlchemy==3.1.1
 frozenlist==1.4.1
+gunicorn==23.0.0
 hiredis==3.0.0
 idna==3.7
 iniconfig==2.0.0
