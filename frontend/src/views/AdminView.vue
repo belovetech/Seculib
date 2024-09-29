@@ -103,24 +103,41 @@ export default {
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { Chart, registerables } from 'chart.js'
+import axios from 'axios'
 
 Chart.register(...registerables)
 
 const statistics = ref({
-  admins: 1,
-  available_books: 15,
+  admins: 0,
+  available_books: 0,
   borrowed_books: 0,
-  logged_in_users: 2,
+  logged_in_users: 0,
   requests: {
-    authenticated_user_requests: 2,
-    unauthenticated_user_requests: 7
+    authenticated_user_requests: 0,
+    unauthenticated_user_requests: 0
   },
-  students: 1
+  students: 0
 })
 
 onMounted(() => {
-  renderChart()
+  getStatistics()
 })
+
+function getStatistics() {
+  const token = localStorage.getItem('token')
+  axios
+    .get('https://secure-auth-dos-prevention.onrender.com/api/v1/admin/statistics', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then((response) => {
+      console.log(response.data.data)
+      statistics.value = response.data.data
+      renderChart()
+    })
+    .catch((error) => {
+      console.error('Error fetching statistics:', error)
+    })
+}
 
 function renderChart() {
   const ctx = document.getElementById('requestsChart') as HTMLCanvasElement

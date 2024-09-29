@@ -67,23 +67,22 @@ export default defineComponent({
           password: password.value
         })
 
-        const { token } = response.data.data
+        const { token, is_admin } = response.data.data
         localStorage.setItem('token', token)
         userStore.isUserAuthenticated = true
 
-        if (response.data.is_admin) {
-          userStore.isAdmin = true
+        if (is_admin) {
           router.push('/admin')
         } else {
           router.push('/books')
         }
       } catch (e) {
+        console.log(e)
         const error = e as AxiosError
         const message = (error.response?.data as { message: string })?.message || 'Login failed'
         isError.value = true
         errorMsg.value = message
       } finally {
-        router.push('/books')
         loading.value = false // Set loading to false after request is done
       }
     }

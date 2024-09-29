@@ -32,25 +32,27 @@
             Dashboard
           </router-link>
         </li> -->
-        <li>
-          <router-link
-            to="/profile"
-            class="hover:text-gray-300 transition-colors duration-300"
-            v-if="showProfileLink"
-            @click="closeMobileMenu"
-          >
-            Profile
-          </router-link>
-        </li>
-        <li>
-          <router-link
-            to="/books"
-            class="hover:text-gray-300 transition-colors duration-300"
-            @click="closeMobileMenu"
-          >
-            Books
-          </router-link>
-        </li>
+        <template v-if="!isAdminPage">
+          <li>
+            <router-link
+              to="/profile"
+              class="hover:text-gray-300 transition-colors duration-300"
+              v-if="showProfileLink"
+              @click="closeMobileMenu"
+            >
+              Profile
+            </router-link>
+          </li>
+          <li>
+            <router-link
+              to="/books"
+              class="hover:text-gray-300 transition-colors duration-300"
+              @click="closeMobileMenu"
+            >
+              Books
+            </router-link>
+          </li>
+        </template>
         <li>
           <button
             class="hover:text-gray-300 transition-colors duration-300"
@@ -63,16 +65,6 @@
       </ul>
     </div>
     <ul v-if="isMobileMenuOpen" class="sm:hidden mt-4 space-y-4">
-      <!-- <li>
-        <router-link
-          to="/ddos-prevention-dashboard"
-          class="block text-center hover:text-gray-300 transition-colors duration-300"
-          v-if="showProfileLink"
-          @click="closeMobileMenu"
-        >
-          Dashboard
-        </router-link>
-      </li> -->
       <li>
         <router-link
           to="/profile"
@@ -126,6 +118,10 @@ export default defineComponent({
       return !['/register', '/login', '/'].includes(route.path)
     })
 
+    const isAdminPage = computed(() => {
+      return route.path === '/admin'
+    })
+
     const toggleMobileMenu = () => {
       isMobileMenuOpen.value = !isMobileMenuOpen.value
     }
@@ -144,6 +140,7 @@ export default defineComponent({
       isMobileMenuOpen,
       showNavBar,
       showProfileLink,
+      isAdminPage,
       toggleMobileMenu,
       closeMobileMenu,
       handleLogout

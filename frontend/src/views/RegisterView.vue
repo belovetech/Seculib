@@ -102,11 +102,13 @@
 import { defineComponent, ref } from 'vue'
 import axios, { AxiosError } from 'axios'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/useUserStore'
 
 export default defineComponent({
   name: 'RegisterView',
   setup() {
     const router = useRouter()
+    const userStore = useUserStore()
 
     const name = ref('')
     const matricNo = ref('')
@@ -134,7 +136,7 @@ export default defineComponent({
       }
 
       try {
-        await axios.post(`${BASE_URL}/register`, {
+        const response = await axios.post(`${BASE_URL}/register`, {
           name: name.value,
           matric_no: matricNo.value,
           department: department.value,
@@ -142,9 +144,14 @@ export default defineComponent({
           password: password.value
         })
 
-        router.push('/login')
+        // router.push('/login')
 
         // Todo: store token and redirect to /books
+        const { token } = response.data.data
+        localStorage.setItem('token', token)
+        userStore.isUserAuthenticated = true
+
+        router.push('/books')
       } catch (e) {
         const error = e as AxiosError
         const data = error.response?.data as { message: string }

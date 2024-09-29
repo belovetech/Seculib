@@ -66,4 +66,45 @@ export const useUserStore = defineStore('user', {
     isAuthenticated: (state) => !!state.user,
     isAdmin: (state) => state.isAdmin
   }
+
+  // async getStatistics() {
+  //   axios
+  //     .get('https://secure-auth-dos-prevention.onrender.com/api/v1/admin/statistics')
+  //     .then((response) => {
+  //       console.log(response.data.data)
+  //       statistics.value = response.data.data
+  //       renderChart()
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error fetching statistics:', error)
+  //     })
+  // },
+
+  // async renderChart() {
+  //   const ctx = document.getElementById('requestsChart') as HTMLCanvasElement
+  //   new Chart(ctx, {
+  //     type: 'bar',
+  //     data: {
+  //       labels: ['Authenticated', 'Unauthenticated'],
+  //       datasets: [
+  //         {
+  //           label: 'Requests',
+  //           data: [
+  //             statistics.value.requests.authenticated_user_requests,
+  //             statistics.value.requests.unauthenticated_user_requests
+  //           ],
+  //           backgroundColor: ['#4FD1C5', '#F6E05E']
+  //         }
+  //       ]
+  //     },
+  //     options: {
+  //       responsive: true,
+  //       scales: {
+  //         y: {
+  //           beginAtZero: true
+  //         }
+  //       }
+  //     }
+  //   })
+  // }
 })
