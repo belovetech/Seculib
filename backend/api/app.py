@@ -9,11 +9,14 @@ from api.cli_commands import register_cli_commands
 from flask_migrate import Migrate
 from helpers.decorators import is_authenticated, token_required, admin_required
 from models.engine.admin_manager import AdminManager
+from helpers.decorators import rate_limiter
 
 
 student_manager = AdminManager(db)
 authenticated_user_requests = 0
 unauthenticated_user_requests = 0
+possible_ddos_attack = False
+suspicious_ddos_attack = 0
 
 app = Flask(__name__)
 DATABASE_URL = os.getenv('DATABASE_URL')
@@ -56,8 +59,23 @@ def count_requests():
     else:
         unauthenticated_user_requests += 1
 
+# detect possible ddos attack using the rate limit error and count
+
+
+@app.errorhandler(429)
+def rate_limit_handler(e):
+    global suspicious_ddos_attack, possible_ddos_attack
+    suspicious_ddos_attack += 1
+    if suspicious_ddos_attack > 10:
+        possible_ddos_attack = True
+
+    if hasattr(e, 'description') and isinstance(e.description, dict):
+        return jsonify(e.description), 429
+    return jsonify({'message': 'Too many requests'}), 429
+
 
 @app.route('/healthz', methods=['GET'])
+@rate_limiter
 def healthz():
     return jsonify({'message': 'OK'}), 200
 
@@ -70,9 +88,14 @@ def statistics():
         data = student_manager.statistics()
         requests = {
             'authenticated_user_requests': authenticated_user_requests,
-            'unauthenticated_user_requests': unauthenticated_user_requests
+            'unauthenticated_user_requests': unauthenticated_user_requests,
+        }
+        ddos_attack = {
+            'possible_ddos_attack': possible_ddos_attack,
+            'suspicious_ddos_attack': suspicious_ddos_attack
         }
         data['requests'] = requests
+        data['ddos_attack'] = ddos_attack
         return jsonify({'message': 'success', 'data':
                         data
                         }), 200

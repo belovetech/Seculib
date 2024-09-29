@@ -5,6 +5,8 @@ import jwt
 from models.engine.session_manager import SessionManager
 from helpers.middlewares import RateLimitMiddleware
 from models.engine.db import db
+from werkzeug.exceptions import TooManyRequests
+import time
 
 
 SECRET_KEY = os.getenv('SECRET_KEY')
@@ -60,7 +62,7 @@ def rate_limiter(f):
                 rate_limit=authenticated_requests_per_minute, time_window=time_window)
 
         if rate_limit.is_rate_limited(client_ip, endpoint):
-            return jsonify({"error": "Too many requests"}), 429
+            raise TooManyRequests(description={"message": "Too many requests"})
         return f(*args, **kwargs)
     return decorated_function
 
