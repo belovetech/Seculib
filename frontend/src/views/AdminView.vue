@@ -27,8 +27,8 @@
             <p class="text-lg font-bold text-blue-500">{{ statistics.admins }}</p>
           </div>
           <div class="flex justify-between items-center">
-            <h3 class="text-base text-gray-600">Logged In Users</h3>
-            <p class="text-lg font-bold text-purple-500">{{ statistics.logged_in_users }}</p>
+            <h3 class="text-base text-gray-600">Registered Users</h3>
+            <p class="text-lg font-bold text-purple-500">{{ statistics.students }}</p>
           </div>
         </div>
       </div>

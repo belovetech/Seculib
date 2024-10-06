@@ -144,8 +144,6 @@ export default defineComponent({
           password: password.value
         })
 
-        // router.push('/login')
-
         // Todo: store token and redirect to /books
         const { token } = response.data.data
         localStorage.setItem('token', token)
