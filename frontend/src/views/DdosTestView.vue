@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col justify-center items-center min-h-screen bg-gray-900 text-center">
-    <h1 class="text-2xl sm:text-4xl md:text-5xl font-bold text-white">
-      Welcome to Seculib Ddos Test
+    <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
+      Seculib DDOS Attack Test
       <img
         src="../assets/white-logo.svg"
         alt="Logo"
