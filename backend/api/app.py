@@ -66,7 +66,7 @@ def count_requests():
 def rate_limit_handler(e):
     global suspicious_ddos_attack, possible_ddos_attack
     suspicious_ddos_attack += 1
-    if suspicious_ddos_attack > 10:
+    if suspicious_ddos_attack > 5:
         possible_ddos_attack = True
 
     if hasattr(e, 'description') and isinstance(e.description, dict):
