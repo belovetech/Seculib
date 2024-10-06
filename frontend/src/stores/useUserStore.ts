@@ -41,7 +41,6 @@ export const useUserStore = defineStore('user', {
         if (error.response?.status === 401) {
           console.error('Unauthorized')
           this.logout()
-          // this.router.push('/login')
         }
         console.error('Error fetching profile:', e)
       }

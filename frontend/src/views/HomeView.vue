@@ -32,6 +32,12 @@ export default defineComponent({
       >
         Login
       </router-link>
+      <router-link
+        to="/ddos-test"
+        class="bg-red-500 text-white py-2 px-6 rounded hover:bg-red-700 transition"
+      >
+        DDoS Test
+      </router-link>
     </div>
   </div>
 </template>

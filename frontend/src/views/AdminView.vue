@@ -1,40 +1,79 @@
 <template>
   <div class="p-8 bg-gray-100 min-h-screen">
-    <!-- Page Header -->
-    <h1 class="text-3xl font-bold mb-6 text-gray-700">Admin Dashboard</h1>
+    <h1 class="text-3xl font-bold mb-6 text-gray-800">Admin Dashboard</h1>
 
-    <!-- Statistics Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-      <div class="bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-xl font-semibold text-gray-600">Admins</h2>
-        <p class="text-3xl font-bold text-blue-500">{{ statistics.admins }}</p>
-      </div>
-      <div class="bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-xl font-semibold text-gray-600">Available Books</h2>
-        <p class="text-3xl font-bold text-green-500">{{ statistics.available_books }}</p>
-      </div>
-      <div class="bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-xl font-semibold text-gray-600">Borrowed Books</h2>
-        <p class="text-3xl font-bold text-red-500">{{ statistics.borrowed_books }}</p>
-      </div>
+    <div v-if="isLoading" class="text-center text-gray-600">
+      Loading statistics...
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-      <div class="bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-xl font-semibold text-gray-600">Logged In Users</h2>
-        <p class="text-3xl font-bold text-purple-500">{{ statistics.logged_in_users }}</p>
+    <div v-else-if="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
+      <strong class="font-bold">Error!</strong>
+      <span class="block sm:inline">{{ error }}</span>
+    </div>
+
+    <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <!-- User Statistics -->
+      <div class="bg-white shadow-lg rounded-lg p-6 transition-all duration-300 hover:shadow-xl">
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center">
+            <i class="fas fa-users text-blue-500 text-2xl mr-3"></i>
+            <h2 class="text-xl font-semibold text-gray-700">User Statistics</h2>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div class="flex justify-between items-center">
+            <h3 class="text-lg text-gray-600">Admins</h3>
+            <p class="text-2xl font-bold text-blue-500">{{ statistics.admins }}</p>
+          </div>
+          <div class="flex justify-between items-center">
+            <h3 class="text-lg text-gray-600">Logged In Users</h3>
+            <p class="text-2xl font-bold text-purple-500">{{ statistics.logged_in_users }}</p>
+          </div>
+        </div>
       </div>
-      <div class="bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-xl font-semibold text-gray-600">Authenticated Requests</h2>
-        <p class="text-3xl font-bold text-teal-500">
-          {{ statistics.requests.authenticated_user_requests }}
-        </p>
+
+      <!-- Book Inventory -->
+      <div class="bg-white shadow-lg rounded-lg p-6 transition-all duration-300 hover:shadow-xl">
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center">
+            <i class="fas fa-book text-green-500 text-2xl mr-3"></i>
+            <h2 class="text-xl font-semibold text-gray-700">Book Inventory</h2>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div class="flex justify-between items-center">
+            <h3 class="text-lg text-gray-600">Available Books</h3>
+            <p class="text-2xl font-bold text-green-500">{{ statistics.available_books }}</p>
+          </div>
+          <div class="flex justify-between items-center">
+            <h3 class="text-lg text-gray-600">Borrowed Books</h3>
+            <p class="text-2xl font-bold text-red-500">{{ statistics.borrowed_books }}</p>
+          </div>
+        </div>
       </div>
-      <div class="bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-xl font-semibold text-gray-600">Unauthenticated Requests</h2>
-        <p class="text-3xl font-bold text-yellow-500">
-          {{ statistics.requests.unauthenticated_user_requests }}
-        </p>
+
+      <!-- Security Alerts -->
+      <div class="bg-white shadow-lg rounded-lg p-6 transition-all duration-300 hover:shadow-xl">
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center">
+            <i class="fas fa-shield-alt text-yellow-500 text-2xl mr-3"></i>
+            <h2 class="text-xl font-semibold text-gray-700">Security Alerts</h2>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div class="flex justify-between items-center">
+            <h3 class="text-lg text-gray-600">Suspicious DDoS</h3>
+            <p class="text-2xl font-bold text-yellow-500">
+              {{ statistics.ddos_attack.suspicious_ddos_attack }}
+            </p>
+          </div>
+          <div class="flex justify-between items-center">
+            <h3 class="text-lg text-gray-600">Potential DDoS</h3>
+            <p class="text-2xl font-bold text-teal-500">
+              {{ statistics.ddos_attack.possible_ddos_attack }}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -45,60 +84,6 @@
     </div>
   </div>
 </template>
-<!--
-<script lang="ts">
-import { Chart } from 'chart.js'
-
-export default {
-  data() {
-    return {
-      statistics: {
-        admins: 1,
-        available_books: 15,
-        borrowed_books: 0,
-        logged_in_users: 2,
-        requests: {
-          authenticated_user_requests: 2,
-          unauthenticated_user_requests: 7
-        },
-        students: 1
-      }
-    }
-  },
-  mounted() {
-    this.renderChart()
-  },
-  methods: {
-    renderChart() {
-      const ctx = document.getElementById('requestsChart').getContext('2d')
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['Authenticated', 'Unauthenticated'],
-          datasets: [
-            {
-              label: 'Requests',
-              data: [
-                this.statistics.requests.authenticated_user_requests,
-                this.statistics.requests.unauthenticated_user_requests
-              ],
-              backgroundColor: ['#4FD1C5', '#F6E05E']
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
-        }
-      })
-    }
-  }
-}
-</script> -->
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
@@ -112,12 +97,19 @@ const statistics = ref({
   available_books: 0,
   borrowed_books: 0,
   logged_in_users: 0,
+  students: 0,
   requests: {
     authenticated_user_requests: 0,
     unauthenticated_user_requests: 0
   },
-  students: 0
+  ddos_attack: {
+    possible_ddos_attack: false,
+    suspicious_ddos_attack: 0
+  }
 })
+
+const error = ref('')
+const isLoading = ref(false)
 
 onMounted(() => {
   getStatistics()
@@ -125,6 +117,9 @@ onMounted(() => {
 
 function getStatistics() {
   const token = localStorage.getItem('token')
+  isLoading.value = true
+  error.value = ''
+
   axios
     .get('https://secure-auth-dos-prevention.onrender.com/api/v1/admin/statistics', {
       headers: { Authorization: `Bearer ${token}` }
@@ -136,6 +131,20 @@ function getStatistics() {
     })
     .catch((error) => {
       console.error('Error fetching statistics:', error)
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        error.value = `Server error: ${error.response.status} - ${error.response.data.message || 'Unknown error'}`
+      } else if (error.request) {
+        // The request was made but no response was received
+        error.value = 'Network error: No response received from server'
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        error.value = `Error: ${error.message}`
+      }
+    })
+    .finally(() => {
+      isLoading.value = false
     })
 }
 

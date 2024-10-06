@@ -111,7 +111,7 @@ export default defineComponent({
     const isMobileMenuOpen = ref(false)
 
     const showNavBar = computed(() => {
-      return !['/register', '/login', '/'].includes(route.path)
+      return !['/register', '/login', '/', '/ddos-test'].includes(route.path)
     })
 
     const showProfileLink = computed(() => {

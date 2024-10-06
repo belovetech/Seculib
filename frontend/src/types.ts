@@ -35,12 +35,3 @@ export interface State {
   isUserAuthenticated: boolean
   isAdmin: boolean
 }
-
-export interface DDOSAttempt {
-  id: number
-  ip_address: string
-  request_count: number
-  attempt_date: string
-  attack_type: string
-  status: string
-}

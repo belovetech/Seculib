@@ -6,7 +6,7 @@ import BookListView from '../components/BookList.vue'
 import ProfileView from '../views/ProfileView.vue'
 import BorrowedBooksView from '../views/BorrowedBooksView.vue'
 import AdminView from '../views/AdminView.vue'
-// import DashBoardView from '../views/DashBoardView.vue'
+import DdosTestView from '../views/DdosTestView.vue'
 import { useUserStore } from '@/stores/useUserStore'
 
 const routes = [
@@ -46,8 +46,12 @@ const routes = [
   {
     path: '/admin',
     name: 'Admin',
-    component: AdminView,
-    // meta: { requiresAuth: true }
+    component: AdminView
+  },
+  {
+    path: '/ddos-test',
+    name: 'DdosTest',
+    component: DdosTestView
   }
 ]
 
