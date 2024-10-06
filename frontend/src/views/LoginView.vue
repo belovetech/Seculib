@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center items-center h-screen">
     <div class="w-full max-w-md bg-gray-800 shadow-lg rounded-lg p-8">
-      <h2 class="text-3xl font-extrabold mb-6 text-center text-white">Login</h2>
+      <h2 class="text-2xl font-bold mb-6 text-center text-white">Login</h2>
       <form @submit.prevent="login">
         <div class="mb-4">
           <label for="matricNo" class="block text-white text-sm font-bold mb-2">Matric No:</label>

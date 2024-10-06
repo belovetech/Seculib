@@ -1,38 +1,39 @@
 <template>
   <div class="min-h-screen bg-gray-100 flex flex-col items-center p-4 sm:p-12">
     <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 sm:p-8">
-      <h2 class="text-2xl sm:text-3xl font-extrabold mb-6 text-center text-gray-800">Details</h2>
+      <!-- <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Details</h2> -->
+      <h2 class="text-xl font-bold mb-6 text-center text-gray-800">Details</h2>
 
       <!-- Profile Information Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <!-- Name -->
         <div class="flex justify-between bg-gray-50 p-4 rounded-lg shadow-inner">
           <h3 class="text-sm sm:text-lg font-semibold text-gray-700">Name:</h3>
-          <p class="text-gray-900 text-sm sm:text-xl">{{ profile.name }}</p>
+          <p class="text-gray-900 text-sm sm:text-lg">{{ profile.name }}</p>
         </div>
 
         <!-- Matric No -->
         <div class="flex justify-between bg-gray-50 p-4 rounded-lg shadow-inner">
           <h3 class="text-sm sm:text-lg font-semibold text-gray-700">Matric No:</h3>
-          <p class="text-gray-900 text-sm sm:text-xl">{{ profile.matric_no }}</p>
+          <p class="text-gray-900 text-sm sm:text-lg">{{ profile.matric_no }}</p>
         </div>
 
         <!-- Department -->
         <div class="flex justify-between bg-gray-50 p-4 rounded-lg shadow-inner">
           <h3 class="text-sm sm:text-lg font-semibold text-gray-700">Department:</h3>
-          <p class="text-gray-900 text-sm sm:text-xl">{{ profile.department }}</p>
+          <p class="text-gray-900 text-sm sm:text-lg">{{ profile.department }}</p>
         </div>
 
         <!-- Level -->
         <div class="flex justify-between bg-gray-50 p-4 rounded-lg shadow-inner">
           <h3 class="text-sm sm:text-lg font-semibold text-gray-700">Level:</h3>
-          <p class="text-gray-900 text-sm sm:text-xl">{{ profile.level }}</p>
+          <p class="text-gray-900 text-sm sm:text-lg">{{ profile.level }}</p>
         </div>
 
         <!-- Borrowed Book Count -->
         <div class="flex justify-between bg-gray-50 p-4 rounded-lg shadow-inner">
           <h3 class="text-sm sm:text-lg font-semibold text-gray-700">Borrowed Books:</h3>
-          <p class="text-gray-900 text-sm sm:text-xl">{{ borrowedBookData.count }}</p>
+          <p class="text-gray-900 text-sm sm:text-lg">{{ borrowedBookData.count }}</p>
         </div>
       </div>
 

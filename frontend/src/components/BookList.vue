@@ -1,6 +1,6 @@
 <template>
   <div class="py-6">
-    <h2 class="text-2xl font-extrabold mb-2 text-center text-gray-500">
+    <h2 class="text-1xl font-bold mb-2 text-center text-gray-500">
       {{ books.length }} Available Books
     </h2>
     <ul class="space-y-3">

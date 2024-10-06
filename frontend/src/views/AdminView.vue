@@ -1,12 +1,14 @@
 <template>
   <div class="p-8 bg-gray-100 min-h-screen">
-    <h1 class="text-3xl font-bold mb-6 text-gray-800">Admin Dashboard</h1>
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">Admin Dashboard</h1>
 
-    <div v-if="isLoading" class="text-center text-gray-600">
-      Loading statistics...
-    </div>
+    <div v-if="isLoading" class="text-center text-gray-600">Loading statistics...</div>
 
-    <div v-else-if="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
+    <div
+      v-else-if="error"
+      class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6"
+      role="alert"
+    >
       <strong class="font-bold">Error!</strong>
       <span class="block sm:inline">{{ error }}</span>
     </div>
@@ -16,18 +18,17 @@
       <div class="bg-white shadow-lg rounded-lg p-6 transition-all duration-300 hover:shadow-xl">
         <div class="flex items-center justify-between mb-6">
           <div class="flex items-center">
-            <i class="fas fa-users text-blue-500 text-2xl mr-3"></i>
-            <h2 class="text-xl font-semibold text-gray-700">User Statistics</h2>
+            <h2 class="md:text-xl font-semibold text-gray-700">User Statistics</h2>
           </div>
         </div>
         <div class="space-y-4">
           <div class="flex justify-between items-center">
-            <h3 class="text-lg text-gray-600">Admins</h3>
-            <p class="text-2xl font-bold text-blue-500">{{ statistics.admins }}</p>
+            <h3 class="text-base text-gray-600">Admins</h3>
+            <p class="text-lg font-bold text-blue-500">{{ statistics.admins }}</p>
           </div>
           <div class="flex justify-between items-center">
-            <h3 class="text-lg text-gray-600">Logged In Users</h3>
-            <p class="text-2xl font-bold text-purple-500">{{ statistics.logged_in_users }}</p>
+            <h3 class="text-base text-gray-600">Logged In Users</h3>
+            <p class="text-lg font-bold text-purple-500">{{ statistics.logged_in_users }}</p>
           </div>
         </div>
       </div>
@@ -36,18 +37,17 @@
       <div class="bg-white shadow-lg rounded-lg p-6 transition-all duration-300 hover:shadow-xl">
         <div class="flex items-center justify-between mb-6">
           <div class="flex items-center">
-            <i class="fas fa-book text-green-500 text-2xl mr-3"></i>
-            <h2 class="text-xl font-semibold text-gray-700">Book Inventory</h2>
+            <h2 class="text-lg md:text-xl font-semibold text-gray-700">Book Inventory</h2>
           </div>
         </div>
         <div class="space-y-4">
           <div class="flex justify-between items-center">
-            <h3 class="text-lg text-gray-600">Available Books</h3>
-            <p class="text-2xl font-bold text-green-500">{{ statistics.available_books }}</p>
+            <h3 class="text-base text-gray-600">Available Books</h3>
+            <p class="text-lg font-bold text-green-500">{{ statistics.available_books }}</p>
           </div>
           <div class="flex justify-between items-center">
-            <h3 class="text-lg text-gray-600">Borrowed Books</h3>
-            <p class="text-2xl font-bold text-red-500">{{ statistics.borrowed_books }}</p>
+            <h3 class="text-base text-gray-600">Borrowed Books</h3>
+            <p class="text-lg font-bold text-red-500">{{ statistics.borrowed_books }}</p>
           </div>
         </div>
       </div>
@@ -56,20 +56,19 @@
       <div class="bg-white shadow-lg rounded-lg p-6 transition-all duration-300 hover:shadow-xl">
         <div class="flex items-center justify-between mb-6">
           <div class="flex items-center">
-            <i class="fas fa-shield-alt text-yellow-500 text-2xl mr-3"></i>
-            <h2 class="text-xl font-semibold text-gray-700">Security Alerts</h2>
+            <h2 class="text-lg md:text-xl font-semibold text-gray-700">Security Alerts</h2>
           </div>
         </div>
         <div class="space-y-4">
           <div class="flex justify-between items-center">
-            <h3 class="text-lg text-gray-600">Suspicious DDoS</h3>
-            <p class="text-2xl font-bold text-yellow-500">
+            <h3 class="text-base text-gray-600">Suspicious DDoS</h3>
+            <p class="text-lg font-bold text-yellow-500">
               {{ statistics.ddos_attack.suspicious_ddos_attack }}
             </p>
           </div>
           <div class="flex justify-between items-center">
-            <h3 class="text-lg text-gray-600">Potential DDoS</h3>
-            <p class="text-2xl font-bold text-teal-500">
+            <h3 class="text-base text-gray-600">Potential DDoS</h3>
+            <p class="text-lg font-bold text-teal-500">
               {{ statistics.ddos_attack.possible_ddos_attack }}
             </p>
           </div>
@@ -79,7 +78,7 @@
 
     <!-- Chart Section -->
     <div class="bg-white shadow-md rounded-lg p-6">
-      <h2 class="text-xl font-semibold text-gray-600 mb-4">User Request Statistics</h2>
+      <h2 class="text-lg md:text-xl font-semibold text-gray-600 mb-4">User Request Statistics</h2>
       <canvas id="requestsChart"></canvas>
     </div>
   </div>
